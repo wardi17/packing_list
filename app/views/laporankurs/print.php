@@ -141,7 +141,7 @@ class FPDF_AutoWrapTable extends FPDF {
         $this->Cell(78, 5, "T O T A L", 1, 0, 'C');
         $this->Cell(22, 5, $total_qty, 1, 0, 'R');
         $this->Cell(10, 5, "", 1, 0, 'R');
-        $this->Cell(22, 5, $total_Price, 1, 0, 'R');
+        $this->Cell(22, 5, "", 1, 0, 'R');
         $this->Cell(22, 5, $total_USD, 1, 0, 'R');
         $this->Cell(22, 5, $total_Kurs, 1, 0, 'R');
         $this->Cell(22, 5, $total_Rp, 1, 0, 'R');
@@ -364,4 +364,3 @@ $tabel->printPDF();
 
 ?>
 
-cara ganti branches defalut di github

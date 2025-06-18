@@ -46,17 +46,20 @@ class TransakiKurModel extends Models
                 "PartName"        => rtrim(odbc_result($result, 'PartName')),
                 "Unit"            => rtrim(odbc_result($result, 'Unit')),
                 "Qty"             => number_format(rtrim(odbc_result($result, 'Qty')), 2, '.', ','),
-                "Price"           => number_format(rtrim(odbc_result($result, 'Price')), 3, '.', ','),
+                "Price"           => number_format(rtrim(odbc_result($result, 'Price')), 4, '.', ','),
                 "Amount_USD"      => number_format(rtrim(odbc_result($result, 'Amount_USD')), 2, '.', ','),
-                "Kurs"            => round(rtrim(odbc_result($result, 'Kurs')), 0),
+                "Kurs"            => number_format(rtrim(odbc_result($result, 'Kurs')), 0),
                 "Amount_Rp"       => number_format(rtrim(odbc_result($result, 'Amount_Rp')), 2, '.', ','),
-                "kur_akhir"       => round(rtrim(odbc_result($result, 'kur_akhir')), 0),
+                "kur_akhir"       => rtrim(odbc_result($result, 'kur_akhir')),
                 "Amount_RpAkhir"  => number_format(rtrim(odbc_result($result, 'Amount_RpAkhir')), 2, '.', ','),
                 "Total_Qty"       => number_format(rtrim(odbc_result($result, 'Total_Qty')), 2, '.', ','),
                 "Total_amount_USD"=> number_format(rtrim(odbc_result($result, 'Total_amount_USD')), 2, '.', ','),
                 "Total_amount_Rp" => number_format(rtrim(odbc_result($result, 'Total_amount_Rp')), 2, '.', ','),
                 "Total_amount_Rpakhir" => number_format(rtrim(odbc_result($result, 'Total_amount_Rpakhir')), 2, '.', ','),
                 "Prosentase" => number_format(rtrim(odbc_result($result, 'Prosentase')), 2, '.', ','),
+                 "Hpp_Awal"       => rtrim(odbc_result($result, 'Hpp_Awal')),
+                 "Hpp_Akhir"      => rtrim(odbc_result($result, 'Hpp_Akhir')),
+                 "Selisih_Hpp"       => rtrim(odbc_result($result, 'Selisih_Hpp')),
             ];
         }
 
@@ -262,11 +265,11 @@ class TransakiKurModel extends Models
                 "PartName"       => rtrim(odbc_result($result, 'PartName')),
                 "Unit"           => rtrim(odbc_result($result, 'Unit')),
                 "Qty"            => number_format($qty, 2, '.', ','),
-                "Price"          => number_format($price, 3, '.', ','),
+                "Price"          => number_format($price, 4, '.', ','),
                 "Amount_USD"     => number_format($amount_usd, 2, '.', ','),
                 "Kurs"           => round($kurs, 0),
                 "Amount_Rp"      => number_format($amount_rp, 2, '.', ','),
-                "kur_akhir"      => round($kurs_akhir, 0),
+                "kur_akhir"      =>$kurs_akhir,
                 "Amount_RpAkhir" => number_format($amount_akhir, 2, '.', ','),
                 "Total_amount_USD" => number_format($total_usd, 2, '.', ','),
                 "Total_amount_Rp" => number_format($total_rp, 2, '.', ','),
@@ -353,28 +356,16 @@ class TransakiKurModel extends Models
     if (count($detailforwader) === 0) {
         return 1;
     }
-
-        // Hapus data lama terlebih dahulu
-        $deleteResult = $this->DeletedataForwader($transo);
-
-        // Jika delete gagal, hentikan proses simpan
-        if (!$deleteResult) {
-            return 0; // Gagal karena delete belum selesai
-        }
+       
 
     $success = true;
 
     // Simpan ulang data berdasarkan detail baru
     foreach ($detailforwader as $item) {
         $query = "
-            INSERT INTO {$this->table_fro} (No_Pls, msID, rumus, hitungan, amount)
-            VALUES (
-                '{$transo}',
-                '{$this->test_input($item["msID"])}',
-                '{$this->test_input($item["rumus"])}',
-                '{$this->test_input($item["hitungan"])}',
-                '{$this->test_input($item["amount"])}'
-            )
+            UPDATE $this->table_fro SET  rumus ='{$this->test_input($item["rumus"])}', hitungan='{$this->test_input($item["hitungan"])}', 
+            amount='{$this->test_input($item["amount"])}'
+            WHERE No_Pls ='{$transo}'AND msID='{$this->test_input($item["msID"])}'
         ";
 
         if (!$this->db->baca_sql2($query)) {
@@ -386,11 +377,7 @@ class TransakiKurModel extends Models
 }
 
 
-        private function DeletedataForwader($transo)
-        {
-            $query = "DELETE FROM {$this->table_fro} WHERE No_Pls = '{$transo}'";
-            return $this->db->baca_sql2($query);
-        }
+    
 
  private function Updatedetailkurdata($transo, $detailkurdata)
     {
@@ -545,11 +532,11 @@ class TransakiKurModel extends Models
                 "PartName"      => rtrim(odbc_result($result,'PartName')),
                 "satuan"        => rtrim(odbc_result($result,'satuan')),
                 "qty"           => number_format(rtrim(odbc_result($result,'Qty')),0, ',', ','),
-                "Price"         => number_format(rtrim(odbc_result($result,'Price')),0, ',', ','),
+                "Price"         => number_format(rtrim(odbc_result($result,'Price')),4, '.', '.'),
                 "Amount_USD"    => number_format(rtrim(odbc_result($result,'Amount_USD')),0, '.', ','),
                 "Amount_Rp"     => number_format(rtrim(odbc_result($result,'Amount_Rp')),0, '.', ','),
-                "Kurs"          => number_format(rtrim(odbc_result($result,'Kurs')),0, '.', '.'),
-                "Kurs_Akhir"    => number_format(rtrim(odbc_result($result,'Kurs_Akhir')), 0, '.', '.'),
+                "Kurs"          => number_format(rtrim(odbc_result($result,'Kurs')),2, '.', '.'),
+                "Kurs_Akhir"    => number_format(rtrim(odbc_result($result,'Kurs_Akhir')),2, '.', '.'),
                 "Amount_Akhir"  => number_format(rtrim(odbc_result($result,'Amount_Akhir')), 0, ',', ','),
                
                 

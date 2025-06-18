@@ -51,10 +51,12 @@ BEGIN
         Unit CHAR(10),
         Price FLOAT,
         Amount_USD FLOAT,
-        Kurs FLOAT,
+		Kurs FLOAT,
+		Hpp_Awal FLOAT,
         Amount_Rp FLOAT,
         kur_akhir FLOAT,
         Amount_RpAkhir FLOAT,
+		Hpp_Akhir FLOAT,
         Total_Qty FLOAT,
         Total_amount_USD FLOAT,
         Total_amount_Rp FLOAT
@@ -102,7 +104,7 @@ BEGIN
     IF @total_amount_USD = 0
         SET @kurs_akhir = 0;
     ELSE
-        SET @kurs_akhir = ROUND((@total_amount_rp + @totolpib) / @total_amount_USD, 0);
+        SET @kurs_akhir = (@total_amount_rp + @totolpib) / @total_amount_USD;
 
     -- ============================
     -- Insert Data ke #temptess2
@@ -117,9 +119,11 @@ BEGIN
         Price,
         Amount_USD,
         Kurs,
+		Price * Kurs AS Hpp_Awal,
         Amount_Rp,
         @kurs_akhir AS kur_akhir,
         Amount_USD * @kurs_akhir AS Amount_RpAkhir,
+		Price * @kurs_akhir AS Hpp_Akhir,
         @total_qty,
         @total_amount_USD,
         @total_amount_rp
@@ -147,6 +151,7 @@ BEGIN
     
     SELECT 
         *,
+		 Hpp_Akhir - Hpp_Awal AS Selisih_Hpp,
         @total_amount_akhir AS Total_amount_Rpakhir,
 		 @prosentase AS Prosentase
     FROM 
@@ -155,4 +160,4 @@ END
 GO
 
 -- Eksekusi contoh
- EXEC USP_TampildataKur 'PO210128135422', 16688319
+ EXEC USP_TampildataKur 'PO210302072753', 16788319
