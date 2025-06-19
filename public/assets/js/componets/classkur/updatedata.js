@@ -77,9 +77,12 @@ class KurDataService {
             const price         = $(this).find('td:eq(5)').text().replace(/\,/g,"").trim();
             const amount_usd    = $(this).find('td:eq(6)').text().replace(/\,/g,"").trim();
             const kurs          = $(this).find('td:eq(7)').text().replace(/\,/g,"").trim();
-            const amount_rp     = $(this).find('td:eq(8)').text().replace(/\,/g,"").trim();
-            const kurs_akhir    = $(this).find('td:eq(9)').text().replace(/\,/g,"").trim();
-            const amount_akhir    = $(this).find('td:eq(10)').text().replace(/\,/g,"").trim();
+            const Hpp_Awal      = $(this).find('td:eq(8)').attr('id').replace(/\,/g,"").trim();
+            const amount_rp     = $(this).find('td:eq(9)').text().replace(/\,/g,"").trim();
+            const kurs_akhir    = $(this).find('td:eq(10)').attr('id').replace(/\,/g,"").trim();
+            const amount_akhir   = $(this).find('td:eq(11)').text().replace(/\,/g,"").trim();
+            const Hpp_Akhir     = $(this).find('td:eq(12)').attr('id').replace(/\,/g,"").trim();
+            const Selisih_Hpp     = $(this).find('td:eq(13)').attr('id').replace(/\,/g,"").trim();
 
            
 
@@ -92,9 +95,12 @@ class KurDataService {
                 price    : price,
                 amount_usd: amount_usd,
                 kurs     : kurs,
+                Hpp_Awal :Hpp_Awal,
                 amount_rp :amount_rp,
                 kurs_akhir : kurs_akhir,
-                amount_akhir:amount_akhir
+                amount_akhir:amount_akhir,
+                Hpp_Akhir   :Hpp_Akhir,
+                Selisih_Hpp :Selisih_Hpp
             
             });
         });

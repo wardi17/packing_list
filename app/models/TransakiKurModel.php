@@ -29,7 +29,7 @@ class TransakiKurModel extends Models
     private $total_KursAkhir;
     private $total_RpAkhir;
     private $total_Prosentase;  
-
+    private $currid;
     public function ProsesGetkur($post)
     {
         $nopo = $this->test_input($post["nopo"]);
@@ -108,7 +108,8 @@ class TransakiKurModel extends Models
             $query = "
                 INSERT INTO {$this->table_dtl} (
                     No_Pls, ItemNo, Partid, PartName, satuan, Qty, Price,
-                    Amount_USD, Kurs, Amount_Rp, Kurs_Akhir, Amount_Akhir
+                    Amount_USD, Kurs, Amount_Rp, Kurs_Akhir, Amount_Akhir,
+                    Hpp_Awal,Hpp_Akhir,Selisih_Hpp
                 ) VALUES (
                     '{$transo}', '{$no}',
                     '{$this->test_input($item["partid"])}',
@@ -120,7 +121,11 @@ class TransakiKurModel extends Models
                     '{$this->test_input($item["kurs"])}',
                     '{$this->test_input($item["amount_rp"])}',
                     '{$this->test_input($item["kurs_akhir"])}',
-                    '{$this->test_input($item["amount_akhir"])}'
+                    '{$this->test_input($item["amount_akhir"])}',
+                    '{$this->test_input($item["Hpp_Awal"])}',
+                    '{$this->test_input($item["Hpp_Akhir"])}',
+                    '{$this->test_input($item["Selisih_Hpp"])}'
+
                 )
             ";
 
@@ -231,6 +236,7 @@ class TransakiKurModel extends Models
     {
         $No_Pls = $this->test_input($post["transnoHider"]);
         $query = "SELECT a.Partid, a.PartName, a.satuan AS Unit, a.Qty, a.Price, a.Amount_USD, a.Kurs, a.Amount_Rp,a.Kurs_Akhir, a.Amount_Akhir,
+        a.Hpp_Awal,a.Hpp_Akhir,a.Selisih_Hpp,
         ISNULL(b.total_usd, 0) AS total_usd,
         ISNULL(b.total_rp, 0) AS total_rp,
         ISNULL(b.total_amountakhir, 0) AS total_amountakhir,
@@ -256,9 +262,13 @@ class TransakiKurModel extends Models
             $amount_akhir = rtrim(odbc_result($result, 'Amount_Akhir'));
             $total_usd    = rtrim(odbc_result($result, 'total_usd'));
             $total_rp     = rtrim(odbc_result($result, 'total_rp'));
+            $Hpp_Awal     = rtrim(odbc_result($result, 'Hpp_Awal'));
+            $Hpp_Akhir    = rtrim(odbc_result($result, 'Hpp_Akhir'));
+            $Selisih_Hpp  = rtrim(odbc_result($result, 'Selisih_Hpp'));
+
             $total_amountakhir     = rtrim(odbc_result($result, 'total_amountakhir'));
             $total_Prosentase     = rtrim(odbc_result($result, 'total_Prosentase'));
-
+           
 
             $datas[] = [
                 "Partid"         => rtrim(odbc_result($result, 'Partid')),
@@ -275,6 +285,9 @@ class TransakiKurModel extends Models
                 "Total_amount_Rp" => number_format($total_rp, 2, '.', ','),
                 "Total_amount_Rpakhir" => number_format($total_amountakhir, 2, '.', ','),
                 "Prosentase" => number_format($total_Prosentase, 2, '.', ','),
+                "Hpp_Awal"      =>$Hpp_Awal,
+                "Hpp_Akhir"     =>$Hpp_Akhir,
+                "Selisih_Hpp"   =>$Selisih_Hpp
             ];
         }
 
@@ -400,7 +413,8 @@ class TransakiKurModel extends Models
             $query = "
                 INSERT INTO {$this->table_dtl} (
                     No_Pls, ItemNo, Partid, PartName, satuan, Qty, Price,
-                    Amount_USD, Kurs, Amount_Rp, Kurs_Akhir, Amount_Akhir
+                    Amount_USD, Kurs, Amount_Rp, Kurs_Akhir, Amount_Akhir,
+                    Hpp_Awal,Hpp_Akhir,Selisih_Hpp
                 ) VALUES (
                     '{$transo}', '{$no}',
                     '{$this->test_input($item["partid"])}',
@@ -412,7 +426,10 @@ class TransakiKurModel extends Models
                     '{$this->test_input($item["kurs"])}',
                     '{$this->test_input($item["amount_rp"])}',
                     '{$this->test_input($item["kurs_akhir"])}',
-                    '{$this->test_input($item["amount_akhir"])}'
+                    '{$this->test_input($item["amount_akhir"])}',
+                    '{$this->test_input($item["Hpp_Awal"])}',
+                    '{$this->test_input($item["Hpp_Akhir"])}',
+                    '{$this->test_input($item["Selisih_Hpp"])}'
                 )
             ";
 
@@ -503,29 +520,33 @@ class TransakiKurModel extends Models
        $datas = [];
        $result = $this->db->baca_sql2($query);
         while(odbc_fetch_row($result)){
-            $this->No_Pli = rtrim(odbc_result($result,'No_Pli'));
-            $this->NoPO = rtrim(odbc_result($result,'NoPO'));
-            $this->EntryDate = rtrim(odbc_result($result,'EntryDate'));
-            $this->Note = rtrim(odbc_result($result,'Note'));
-            $this->supid = rtrim(odbc_result($result,'supid'));
-            $this->Pib = rtrim(odbc_result($result,'Pib'));
-            $this->Forwarder = rtrim(odbc_result($result,'Forwarder'));
-            $this->Total = rtrim(odbc_result($result,'Total'));
-            $this->CustAddress = rtrim(odbc_result($result,'CustAddress'));
-            $this->CustTelpNo = rtrim(odbc_result($result,'CustTelpNo'));
-            $this->CustFaxNo = rtrim(odbc_result($result,'CustFaxNo'));
-            $this->CustEmail = rtrim(odbc_result($result,'CustEmail'));
-            $this->SupperiID = rtrim(odbc_result($result,'SupperiID'));
-            $this->SupperiName = rtrim(odbc_result($result,'SupperiName'));
-            $this->id_bl_awb = rtrim(odbc_result($result,'id_bl_awb'));
-            $this->total_qty = number_format(rtrim(odbc_result($result,'total_qty')), 0, ',', ',');
-            $this->total_Price = number_format(rtrim(odbc_result($result,'total_Price')), 0, ',', ',');
-            $this->total_USD = number_format(rtrim(odbc_result($result,'total_USD')), 0, ',', ',');
-            $this->total_Kurs = number_format(rtrim(odbc_result($result,'total_Kurs')), 0, '.', '.');
-            $this->total_Rp = number_format(rtrim(odbc_result($result,'total_Rp')), 0, ',', ',');
-            $this->total_KursAkhir = number_format(rtrim(odbc_result($result,'total_KursAkhir')), 0, '.', '.');
-            $this->total_RpAkhir = number_format(rtrim(odbc_result($result,'total_RpAkhir')), 0, ',', ',');
+            $this->No_Pli           = rtrim(odbc_result($result,'No_Pli'));
+            $this->NoPO             = rtrim(odbc_result($result,'NoPO'));
+            $this->EntryDate        = rtrim(odbc_result($result,'EntryDate'));
+            $this->Note             = rtrim(odbc_result($result,'Note'));
+            $this->supid            = rtrim(odbc_result($result,'supid'));
+            $this->Pib              = rtrim(odbc_result($result,'Pib'));
+            $this->Forwarder        = rtrim(odbc_result($result,'Forwarder'));
+            $this->Total            = rtrim(odbc_result($result,'Total'));
+            $this->CustAddress      = rtrim(odbc_result($result,'CustAddress'));
+            $this->CustTelpNo       = rtrim(odbc_result($result,'CustTelpNo'));
+            $this->CustFaxNo        = rtrim(odbc_result($result,'CustFaxNo'));
+            $this->CustEmail        = rtrim(odbc_result($result,'CustEmail'));
+            $this->SupperiID        = rtrim(odbc_result($result,'SupperiID'));
+            $this->SupperiName      = rtrim(odbc_result($result,'SupperiName'));
+            $this->id_bl_awb        = rtrim(odbc_result($result,'id_bl_awb'));
+            $this->total_qty        = number_format(rtrim(odbc_result($result,'total_qty')), 0, ',', ',');
+            $this->total_Price      = number_format(rtrim(odbc_result($result,'total_Price')), 0, ',', ',');
+            $this->total_USD        = number_format(rtrim(odbc_result($result,'total_USD')), 0, ',', ',');
+            $this->total_Kurs       = number_format(rtrim(odbc_result($result,'total_Kurs')), 0, '.', '.');
+            $this->total_Rp         = number_format(rtrim(odbc_result($result,'total_Rp')), 0, ',', ',');
+            $this->total_KursAkhir  = number_format(rtrim(odbc_result($result,'total_KursAkhir')), 0, '.', '.');
+            $this->total_RpAkhir    = number_format(rtrim(odbc_result($result,'total_RpAkhir')), 0, ',', ',');
             $this->total_Prosentase = number_format(rtrim(odbc_result($result,'total_Prosentase')), 2, '.', '.');
+            $this->currid           = rtrim(odbc_result($result,'currid'));
+            $Hpp_Akhir = round(rtrim(odbc_result($result, 'Hpp_Akhir')),0);
+            $Hpp_Awal = round(rtrim(odbc_result($result, 'Hpp_Awal')),0);
+
             $datas[] =[
                 "ItemNo"        => (int)rtrim(odbc_result($result,'ItemNo')),
                 "Partid"        => rtrim(odbc_result($result,'Partid')),
@@ -535,40 +556,41 @@ class TransakiKurModel extends Models
                 "Price"         => number_format(rtrim(odbc_result($result,'Price')),4, '.', '.'),
                 "Amount_USD"    => number_format(rtrim(odbc_result($result,'Amount_USD')),0, '.', ','),
                 "Amount_Rp"     => number_format(rtrim(odbc_result($result,'Amount_Rp')),0, '.', ','),
-                "Kurs"          => number_format(rtrim(odbc_result($result,'Kurs')),2, '.', '.'),
-                "Kurs_Akhir"    => number_format(rtrim(odbc_result($result,'Kurs_Akhir')),2, '.', '.'),
+                "Kurs"          => number_format(rtrim(odbc_result($result,'Kurs')),0, '.', '.'),
+                "Kurs_Akhir"    => number_format(rtrim(odbc_result($result,'Kurs_Akhir')),0, '.', '.'),
                 "Amount_Akhir"  => number_format(rtrim(odbc_result($result,'Amount_Akhir')), 0, ',', ','),
-               
-                
-
+                "Hpp_Awal"      => number_format(rtrim(odbc_result($result,'Hpp_Awal')), 0, ',', ','),
+                "Hpp_Akhir"     => number_format(rtrim(odbc_result($result,'Hpp_Akhir')), 0, ',', ','),
+                "Selisih_Hpp"   => number_format($Hpp_Akhir - $Hpp_Awal,0, ',', '.'),
              ];
             }
 	
             $dataheader=[
-                "ID_Hider"=>$transnoHider,
-                "No_Pli"=>$this->No_Pli,
-                "NoPO"=>$this->NoPO,
-                "EntryDate"=>$this->EntryDate,
-                "Note"=>$this->Note,
-                "supid"=>$this->supid,
-                "Pib"=>number_format($this->Pib, 2, '.', ','),
-                "Forwarder"=>number_format($this->Forwarder, 2, '.', ','),
-                "Total"=>number_format($this->Total, 2, '.', ','),
-                "CustAddres"=>$this->CustAddress,
-                "CustTelpNo"=>$this->CustTelpNo,
-                "CustFaxNo"=>$this->CustFaxNo,
-                "CustEmail"=>$this->CustEmail,
-                "SupperiID"=>$this->SupperiID,
-                "SupperiName"=>$this->SupperiName,
-                "id_bl_awb"=>$this->id_bl_awb,
-                "total_qty"=>$this->total_qty,
-                "total_Price"=>$this->total_Price,
-                "total_USD"=>$this->total_USD,
-                "total_Kurs"=>$this->total_Kurs,
-                "total_Rp"=>$this->total_Rp,
-                "total_KursAkhir"=>$this->total_KursAkhir,
-                "total_RpAkhir"=>$this->total_RpAkhir,
-                "total_Prosentase"=>$this->total_Prosentase
+                "ID_Hider"          =>$transnoHider,
+                "No_Pli"            =>$this->No_Pli,
+                "NoPO"              =>$this->NoPO,
+                "EntryDate"         =>$this->EntryDate,
+                "Note"              =>$this->Note,
+                "supid"             =>$this->supid,
+                "Pib"               =>number_format($this->Pib, 2, '.', ','),
+                "Forwarder"         =>number_format($this->Forwarder, 2, '.', ','),
+                "Total"             =>number_format($this->Total, 2, '.', ','),
+                "CustAddres"        =>$this->CustAddress,
+                "CustTelpNo"        =>$this->CustTelpNo,
+                "CustFaxNo"         =>$this->CustFaxNo,
+                "CustEmail"         =>$this->CustEmail,
+                "SupperiID"         =>$this->SupperiID,
+                "SupperiName"       =>$this->SupperiName,
+                "id_bl_awb"         =>$this->id_bl_awb,
+                "total_qty"         =>$this->total_qty,
+                "total_Price"       =>$this->total_Price,
+                "total_USD"         =>$this->total_USD,
+                "total_Kurs"        =>$this->total_Kurs,
+                "total_Rp"          =>$this->total_Rp,
+                "total_KursAkhir"   =>$this->total_KursAkhir,
+                "total_RpAkhir"     =>$this->total_RpAkhir,
+                "total_Prosentase"  =>$this->total_Prosentase,
+                "currid"            =>$this->currid
             ];
 
             $fulldata =[

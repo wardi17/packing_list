@@ -106,12 +106,12 @@ $userid =  $data["userid"];
                                                           </div>
                                     </div>
 
-                                    <div class="row mb-12 mb-2">
+                                   <div class="row mb-12 mb-2" style="display: none;">
                                         <label for="idpackinglist"  style="width: 20%;"class="col-sm-2 col-form-label">ID PIB</label>
                                         <div class="col-sm-6">
                                           <input  type="text" id="idpackinglist"  class="form-control">
                                         </div>
-                                    </div>
+                                    </div> 
 
                                     <div class="row mb-12 mb-2">
                                         <label for="transnoHider"  style="width: 20%;"class="col-sm-2 col-form-label">Transno</label>
@@ -119,12 +119,12 @@ $userid =  $data["userid"];
                                           <input disabled type="text" id="transnoHider"  class="form-control">
                                         </div>
                                     </div>
-                                    <div class="row mb-12 mb-2">
+                                     <div class="row mb-12 mb-2" style="display: none;">
                                         <label for="id_bl_awb"  style="width: 20%;"class="col-sm-2 col-form-label">BL/AWB</label>
                                         <div class="col-sm-6">
                                           <input  type="text" id="id_bl_awb"  class="form-control">
                                         </div>
-                                    </div>
+                                    </div> 
                                    
                                     </div>
                                     <div class="col-md-6">

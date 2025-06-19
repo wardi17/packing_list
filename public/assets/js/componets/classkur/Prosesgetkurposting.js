@@ -71,6 +71,7 @@ export default class ProsesdataKurPosting {
     divid.empty();
 
     const table = `
+      <div style="overflow-x:auto;">
       <table class="table table-striped table-hover" id="table_kurdata">
         <thead>
           <tr>
@@ -82,9 +83,12 @@ export default class ProsesdataKurPosting {
             <th class="text-end">Price</th>
             <th class="text-end">Amount (USD)</th>
             <th class="text-end">Kurs</th>
+            <th class="text-end">Hpp Awal</th>
             <th class="text-end">Amount (RP)</th>
             <th class="text-end">Kurs Akhir</th>
             <th class="text-end">Amount Akhir (RP)</th>
+            <th class="text-end">Hpp Akhir</th>
+            <th class="text-end">Selisih Hpp</th>
           </tr>
         </thead>
         <tbody>
@@ -100,31 +104,35 @@ export default class ProsesdataKurPosting {
             <td colspan="8"></td>
             </tr>
         </tfoot>
-      </table>`;
+      </table>
+     </div>`;
 
     divid.html(table);
   }
 
     generateTableRows(data) {
     if (!Array.isArray(data)) {
-      return `<tr><td colspan="11">Tidak ada data</td></tr>`;
+      return `<tr><td colspan="14">Tidak ada data</td></tr>`;
     }
 
-    return data.map((item, index) => `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${item.Partid}</td>
-        <td>${item.PartName}</td>
-        <td class="text-end">${item.Qty}</td>
-        <td class="text-center">${item.Unit}</td>
-        <td class="text-center">${item.Price}</td>
-        <td class="text-end">${item.Amount_USD}</td>
-        <td class="text-end">${item.Kurs}</td>
-        <td class="text-end">${item.Amount_Rp}</td>
-        <td class="text-end">${item.kur_akhir}</td>
-        <td class="text-end">${item.Amount_RpAkhir}</td>
-      </tr>
-    `).join("");
+      return data.map((item, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${item.Partid}</td>
+            <td>${item.PartName}</td>
+            <td class="text-end">${item.Qty}</td>
+            <td class="text-center">${item.Unit}</td>
+            <td class="text-end">${item.Price}</td>
+            <td class="text-end">${item.Amount_USD}</td>
+            <td class="text-end">${item.Kurs}</td>
+            <td class="text-end" id="${item.Hpp_Awal}">${Math.round(Number(item.Hpp_Awal || 0))}</td>
+            <td class="text-end">${item.Amount_Rp}</td>
+            <td class="text-end" id="${item.kur_akhir}">${Math.round(Number(item.kur_akhir || 0))}</td>
+            <td class="text-end">${item.Amount_RpAkhir}</td>
+            <td class="text-end" id="${item.Hpp_Akhir}">${Math.round(Number(item.Hpp_Akhir || 0))}</td>
+            <td class="text-end" id="${item.Selisih_Hpp}">${Math.round(Number(item.Selisih_Hpp || 0))}</td>
+        </tr>
+    `).join('');
   }
   generateTotalRow(result){
     if (!Array.isArray(result)) return `<td colspan="8">Tidak ada data</td>`;
@@ -144,9 +152,12 @@ export default class ProsesdataKurPosting {
             <td></td>
             <td class="text-end" id="total_usd">${total_usd}</td>
             <td></td>
+            <td></td>
             <td class="text-end" id="total_rp">${total_rp}</td>
             <td></td>
             <td class="text-end" id="total_amountakhir">${total_amountakhir}</td>
+            <td></td>
+            <td></td>
         `;
         return newrow;
      }

@@ -143,7 +143,6 @@ $userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
                                                                 <th>Tanggal</th>
                                                                 <th>Supplier</th>
                                                                 <th>NoPo</th>
-                                                                <th>ID PIB</th>
                                                                 <th>Ket</th>
                                                                 <th class="text-end">Amount</th>
                                                                 <th>User Input</th>
@@ -177,7 +176,6 @@ $userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
                             <td style="width:10%">${tanggal}<sup class='text-info'>${b.Totaldetail}</sup></td>
                             <td>${b.supid}</td>
                             <td>${b.NoPo}</td>
-                            <td>${idpack}</td>
                             <td>${ket}</td>
                             <td class="text-end">${b.Total}</td>
                              <td>${b.userid}</td>

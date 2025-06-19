@@ -50,6 +50,7 @@ class FPDF_AutoWrapTable extends FPDF {
         $total_KursAkhir = $header["total_KursAkhir"];
         $total_RpAkhir   = $header["total_RpAkhir"];
         $total_Prosentase = $header["total_Prosentase"];
+        $currid           = $header["currid"];
       
          $this->ln(0);
         // Set font for the document
@@ -69,7 +70,7 @@ class FPDF_AutoWrapTable extends FPDF {
 
         // Packing List Title
         $this->SetFont('Arial', 'BI', 14);
-        $this->Cell(0, 10, 'PIB', 0, 1, 'C');
+        $this->Cell(0, 10, 'BIAYA PIB FORWARDER', 0, 1, 'C');
 
         // Buyer Information
         $this->SetFont('Arial', 'B', 8);
@@ -82,17 +83,17 @@ class FPDF_AutoWrapTable extends FPDF {
         $this->SetXY($x + $width+10, $y);
         $this->MultiCell(3,5, ':', 0, 'L', FALSE);
         $this->SetXY($x + $width +13, $y);
-        $this->MultiCell(100+40, 5, 'PT BEST MEGA INDUSTRI Jl. Raya Bogor KM.38 No.77 Sukamaju Cilodong Depok, Jabar 16415, Indonesia', 0, 'L', FALSE);
-        $this->SetXY($x +163, $y);
-        $this->MultiCell(15, 5, 'NO PO  TGL PO  NO PL', 0, 'L', FALSE);
-        $this->SetXY($x + 175, $y);
-        $this->MultiCell(3, 5, ': : :', 0, 'L', FALSE);
-        $this->SetXY($x + 178, $y);
-        $this->MultiCell(25, 5, $NoPO . "\n" . $EntryDate . "\n" . $No_Pli, 0, 'L', FALSE);
+        $this->MultiCell(80, 5, 'PT BEST MEGA INDUSTRI Jl. Raya Bogor KM.38 No.77 Sukamaju Cilodong Depok, Jabar 16415, Indonesia',0, 'L', FALSE);
+        $this->SetXY($x +230, $y);
+        $this->MultiCell(15, 5, 'NO PO  TGL PO ', 0, 'L', FALSE);
+        $this->SetXY($x + 245, $y);
+        $this->MultiCell(3, 5, ': : ', 0, 'L', FALSE);
+        $this->SetXY($x + 248, $y);
+        $this->MultiCell(25, 5, $NoPO . "\n" . $EntryDate , 0, 'L', FALSE);
 
      // Adding BL/AWB
-        $this->Cell(0, 2, '', 0, 1, 'C');
-        $this->MultiCell($width + 80, 5, 'BL/AWB: ' . $id_bl_awb, 0, 'L', FALSE);
+       // $this->Cell(0, 2, '', 0, 1, 'C');
+        //$this->MultiCell($width + 80, 5, 'BL/AWB: ' . $id_bl_awb, 0, 'L', FALSE);
 
         // Data table header
         $this->Cell(0, 2, '', 0, 1, 'C');
@@ -100,21 +101,35 @@ class FPDF_AutoWrapTable extends FPDF {
         $this->ln(0);
         $this->SetFont('Arial', 'B', 7);
         $this->SetX(10);
-        $this->Cell(8, 5, 'NO', 1, 0, 'C');
-        $this->Cell(15, 5, 'ITEM NO', 1, 0, 'C');
-        $this->Cell(55, 5, 'DESCRIPTION', 1, 0, 'C');
-        $this->Cell(22, 5, 'QTY', 1, 0, 'R');
-        $this->Cell(10, 5, 'UNIT', 1, 0, 'C');
-        $this->Cell(22, 5, 'PRICE', 1, 0, 'C');
-        $this->Cell(22, 5, 'AMOUNT (USD)', 1, 0, 'R');
-        $this->Cell(22, 5, 'KURS', 1, 0, 'R');
-        $this->Cell(22, 5, 'AMOUNT (RP)', 1, 0, 'R');
-        $this->Cell(22, 5, 'KURS AKHIR', 1, 0, 'R');
-        $this->Cell(22, 5, 'AMOUNT AKHIR', 1, 1, 'R');
+        //untuk headr atas
+ 
+        $this->Cell(106, 5, '',0, 0, 'C');
+        $this->Cell(36, 5, 'PO ('.$currid.')'  , 1, 0, 'C');
+        $this->Cell(18, 5, '',0, 0, 'R');
+        $this->Cell(36, 5, 'PO (IDR)',1, 0, 'C');
+        $this->Cell(18, 5, '',0, 0, 'R');
+        $this->Cell(36, 5, 'LANDED (IDR)', 1, 0, 'C');
+        $this->Cell(15, 5, '',0, 1, 'R');
+        //and headr atas
+
+        $this->Cell(8, 5, 'No', 1, 0, 'C');
+        $this->Cell(15, 5, 'Item no', 1, 0, 'L');
+        $this->Cell(55, 5, 'Description', 1, 0, 'L'); 
+        $this->Cell(18, 5, 'Qty', 1, 0, 'R');
+        $this->Cell(10, 5, 'Unit', 1, 0, 'C');
+        $this->Cell(18, 5, "Price", 1, 0, 'R');
+        $this->Cell(18, 5, "Amount", 1, 0, 'R');
+        $this->Cell(18, 5, 'Kurs PO', 1, 0, 'R');
+        $this->Cell(18, 5, "Price", 1, 0, 'R');
+        $this->Cell(18, 5, "Amount", 1, 0, 'R');
+        $this->Cell(18, 5, 'Kurs Landed', 1, 0, 'R');
+        $this->Cell(18, 5, 'Amount', 1, 0, 'R');
+        $this->Cell(18, 5, 'HPP', 1, 0, 'R');
+         $this->Cell(15, 5, '+/-', 1, 1, 'R');
 
         $this->SetFont('Arial', '', 7);
-        $this->SetWidths(array(8, 15, 55, 22, 10, 22, 22, 22, 22,22,22));
-        $this->SetAligns(array('C', 'L', 'L', 'R', 'C', 'R', 'R', 'R', 'R', 'R', 'R'));
+        $this->SetWidths(array(8, 15, 55, 18, 10, 18,18, 18, 18, 18,18,18,18,15));
+        $this->SetAligns(array('C', 'L', 'L', 'R', 'C', 'R', 'R', 'R', 'R', 'R', 'R','R','R','R'));
     
         foreach ($detail as $baris) {
             $this->Row(array(
@@ -126,9 +141,12 @@ class FPDF_AutoWrapTable extends FPDF {
                 $baris['Price'],
                 $baris['Amount_USD'],
                 $baris['Kurs'],
+                $baris['Hpp_Awal'],
                 $baris['Amount_Rp'],
                 $baris['Kurs_Akhir'],
-                $baris['Amount_Akhir']
+                $baris['Amount_Akhir'],
+                $baris['Hpp_Akhir'],
+                $baris["Selisih_Hpp"]
             ));
 
            
@@ -139,49 +157,70 @@ class FPDF_AutoWrapTable extends FPDF {
          $this->SetFont('Arial', 'B', 7);
         $this->SetX(10);
         $this->Cell(78, 5, "T O T A L", 1, 0, 'C');
-        $this->Cell(22, 5, $total_qty, 1, 0, 'R');
-        $this->Cell(10, 5, "", 1, 0, 'R');
-        $this->Cell(22, 5, "", 1, 0, 'R');
-        $this->Cell(22, 5, $total_USD, 1, 0, 'R');
-        $this->Cell(22, 5, $total_Kurs, 1, 0, 'R');
-        $this->Cell(22, 5, $total_Rp, 1, 0, 'R');
-        $this->Cell(22, 5, $total_KursAkhir, 1, 0, 'R');
-        $this->Cell(22, 5, $total_RpAkhir, 1, 1, 'R');
-
+        $this->Cell(18, 5, $total_qty, 1, 0, 'R');
+        $this->Cell(10, 5, "", 1, 0, 'R'); //unit 
+        $this->Cell(18, 5, "",1, 0, 'R'); // price usd
+        $this->Cell(18, 5, $total_USD, 1, 0, 'R');
+        $this->Cell(18, 5,'', 1, 0, 'R'); //kurs awal
+        $this->Cell(18, 5,'', 1, 0, 'R'); // price rp
+        $this->Cell(18, 5, $total_Rp, 1, 0, 'R');
+        $this->Cell(18, 5,'',1, 0, 'R');  //kurs akhir
+        $this->Cell(18, 5, $total_RpAkhir, 1,0, 'R');
+        $this->Cell(18, 5,'', 1, 0, 'R'); // hpp landed
+        $this->Cell(15, 5,'', 1, 1, 'R'); // +/-
         // Note section - MENEMPEL ke TOTAL
         $currentY = $this->GetY(); // AMBIL POSISI SETELAH TOTAL
         $this->SetXY(10, $currentY); // MULAI DARI X=10 & Y=sekarang
         $this->SetFont('Arial', 'B', 7);
-        $this->MultiCell(90, 5, $Note,0, 'L', false);
+         $this->MultiCell($width +5, 5, 'Catatan ', 0, 'L', FALSE);
+         $this->SetXY(25, $currentY); 
+        $this->MultiCell(3,5, ':',0, 'L', FALSE);
+        $this->SetXY(28, $currentY); 
+        $this->MultiCell(85,5,$Note,0, 'L', false);
 
-       $this->SetXY(190, $currentY);
-       $this->Cell(40, 5,'Prosentase kenaikan harga unit', 0,0, 'R');
-       $this->Cell(2, 5,':',0,0, 'C');
-       $this->Cell(20, 5,$total_Prosentase ." %", 0,1, 'R');
+        
+        
        
-       $this->Ln(2); 
-       // $this->Cell(0,5, '', 0, 1,'C');
-        // Footer information
-        $this->SetFont('Arial', 'B', 7);
-        $this->SetX(40);
-        $this->Cell(18, 5, 'PIB', 0, 0, 'L');
-        $this->Cell(4, 5, ': Rp. ', 0, 0, 'L');
-        $this->Cell(23, 5, $Pib, 0, 1, 'R');
+ 
+        // Cetak PIB
+        $this->SetXY(171, $currentY);
+        $this->Cell(55, 5, 'PIB', 0, 0, 'L');
+        $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
+        $this->Cell(22, 5, $Pib, 0, 1, 'R');
 
-        $this->SetX(40);
-        $this->Cell(18, 5, 'FORWARDER', 0, 0, 'L');
-        $this->Cell(4, 5, ': Rp. ', 0, 0, 'L');
-        $this->Cell(23, 5, $Forwarder, 0, 1, 'R');
+        //Cetak forwader
+         $x = 171; 
+         $y2 = $this->GetY(); 
+        $this->SetXY($x, $y2);
+        $this->Cell(55, 5, 'FORWARDER',0, 0, 'L');
+        $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
+        $this->Cell(22, 5, $Forwarder,0, 1, 'R');
 
-        $this->SetX(40);
-        $this->Cell(50, 1, '________________________________', 0, 1, 'L');
-        $this->SetX(85);
-        $this->Cell(5, 1, '+', 0, 1, 'L');
+        //cetak penjumlahan
+         $y3 = $this->GetY();
+         $this->SetXY($x, $y3); 
+         $this->Cell(20, 1, str_repeat("_",62), 0, 1, 'L');
 
-        $this->SetX(40);
-        $this->Cell(18, 5, 'TOTAL', 0, 0, 'L');
-        $this->Cell(4, 5, ': Rp. ', 0, 0, 'L');
-        $this->Cell(23, 5, $Total, 0, 1, 'R');
+         $x4 = 259;
+         $y4 = $this->GetY();
+         $this->SetXY($x4, $y4); 
+         $this->Cell(5, 1, '+', 0, 1, 'L');
+
+         $y5 = $this->GetY();
+         $this->SetXY($x, $y5);
+         $this->Cell(55, 5, 'TOTAL', 0, 0, 'L');
+         $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
+         $this->Cell(22, 5, $Total, 0, 1, 'R');
+    
+        
+         //cetak prosentase
+          $y6 = $this->GetY();
+         $this->SetXY($x, $y6);
+         $this->Cell(55, 5,'PROSENTASE KENAIKAN HARGA LANDED',0,0, 'L');
+         $this->Cell(2, 5,':',0,0, 'C');
+         $this->Cell(18, 5,$total_Prosentase ." %", 0,1, 'L');
+
+
      $this->SetY(-100);
       
     }
@@ -310,54 +349,7 @@ $options = array(
     'orientation' => 'L'      // L = landscape
 );
 
-// Sample data (replace with actual data)
-/*$data = array(
-    "dataheader" => array(
-        "ID_Hider" => "12345",
-        "No_Pli" => "PL-001",
-        "NoPO" => "PO-001",
-        "EntryDate" => "2023-10-01",
-        "Note" => "This is a sample note.",
-        "supid" => "Supplier ID",
-        "Pib" => "123456789",
-        "Forwarder" => "Forwarder Name",
-        "Total" => "1000000",
-        "CustAddres" => "Customer Address",
-        "CustTelpNo" => "08123456789",
-        "CustFaxNo" => "021-123456",
-        "CustEmail" => "customer@example.com",
-        "SupperiName" => "Supplier Name",
-        "id_bl_awb" => "AWB-001"
-    ),
-    "datadetail" => array(
-        array(
-            "ItemNo" => "1",
-            "Partid" => "Part-001",
-            "PartName" => "Part Name 1",
-            "qty" => "10",
-            "satuan" => "pcs",
-            "Price" => "100.00",
-            "Amount_USD" => "1000.00",
-            "Kurs" => "14000",
-            "Amount_Rp" => "14000000",
-            "Kurs_Akhir" => "14000",
-            "Amount_Akhir" => "14000000"
-        ),
-        array(
-            "ItemNo" => "2",
-            "Partid" => "Part-002",
-            "PartName" => "Part Name 2",
-            "qty" => "5",
-            "satuan" => "pcs",
-            "Price" => "200.00",
-            "Amount_USD" => "1000.00",
-            "Kurs" => "14000",
-            "Amount_Rp" => "14000000",
-            "Kurs_Akhir" => "14000",
-            "Amount_Akhir" => "14000000"
-        )
-    )
-);*/
+
 
 $tabel = new FPDF_AutoWrapTable($data, $options);
 $tabel->printPDF();

@@ -106,7 +106,7 @@ $userid =  $data["userid"];
                                                           </div>
                                     </div>
 
-                                    <div class="row mb-12 mb-2">
+                                    <div class="row mb-12 mb-2" style="display: none;">
                                         <label for="idpackinglist"  style="width: 20%;"class="col-sm-2 col-form-label">ID PIB</label>
                                         <div class="col-sm-6">
                                           <input  disabled type="text" value="<?=$datapost["No_Pli"]?>" id="idpackinglist"  class="form-control">
@@ -120,7 +120,7 @@ $userid =  $data["userid"];
                                         </div>
                                     </div>
                            
-                                    <div class="row mb-12 mb-2">
+                                    <div class="row mb-12 mb-2" style="display: none;">
                                         <label for="id_bl_awb"  style="width: 20%;"class="col-sm-2 col-form-label">BL/AWB</label>
                                         <div class="col-sm-6">
                                           <input  type="text" disabled id="id_bl_awb" value="<?=$datapost["id_bl_awb"]?>"  class="form-control">
