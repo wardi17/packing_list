@@ -88,8 +88,8 @@ class MsForwaderModel  extends  Models{
 
 
         public function TampilForwader(){
-            $query ="SELECT msID,keterangan,rumus,hitungan FROM $this->table_ms ORDER BY  msID ASC";
-
+            $query ="SELECT msID,keterangan,rumus,hitungan FROM $this->table_ms WHERE status_aktif ='Y' ORDER BY  msID ASC";
+            //die(var_dump($query));
              $result = $this->db->baca_sql2($query);
                 $datas = [];
                 while(odbc_fetch_row($result)){
