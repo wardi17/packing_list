@@ -55,6 +55,16 @@ $userid =  $data["userid"];
 		  background-color: #F3FEB8 !important;
 		}
 
+label,
+input,
+textarea,span,
+select,button ,.select2-selection,.select2-results__option{
+  font-size: 12px !important;
+}
+
+table td, table th {
+    font-size: 12px;
+  }
 
   </style>
 <div id="main">

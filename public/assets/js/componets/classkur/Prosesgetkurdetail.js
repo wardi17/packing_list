@@ -3,9 +3,31 @@ import { baseUrl } from "../config.js";
 export default class ProsesdataKurPosting {
   constructor() {
       this.renderDataNonProses();
+      this.appendCustomStyles();
    
   }
 
+appendCustomStyles() {
+        const style = document.createElement("style");
+        style.textContent = `
+              table td, table th {
+                font-size: 12px;
+            }
+        
+               th, td {
+                text-align: center;
+                vertical-align: middle;
+                }
+
+         #thead{
+            background-color:#E7CEA6 !important;
+            /* font-size: 8px;
+            font-weight: 100 !important; */
+            /*color :#000000 !important;*/
+        }
+        `;
+        document.head.appendChild(style);
+    }
   renderDataNonProses() {
     const transnoHider = $("#transnoHider").val();
 
@@ -67,26 +89,32 @@ export default class ProsesdataKurPosting {
     divid.empty();
 
     const table = `
-      <div style="overflow-x:auto;">
-      <table class="table table-striped table-hover" id="table_kurdata">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Part Id</th>
-            <th>Description</th>
-            <th class="text-end">Qty</th>
-            <th>Unit</th>
-            <th class="text-end">Price</th>
-            <th class="text-end">Amount (USD)</th>
-            <th class="text-end">Kurs</th>
-            <th class="text-end">Hpp Awal</th>
-            <th class="text-end">Amount (RP)</th>
-            <th class="text-end">Kurs Akhir</th>
-            <th class="text-end">Amount Akhir (RP)</th>
-            <th class="text-end">Hpp Akhir</th>
-            <th class="text-end">Selisih Hpp</th>
-          </tr>
-        </thead>
+     <div style="overflow-x:auto;">
+            <table class="table table-striped table-hover table-bordered" id="table_kurdata">
+            <thead id="thead">
+                <tr>
+                    <th rowspan="2">No</th>
+                    <th rowspan="2">Item no</th>
+                    <th rowspan="2" class="text-start">Description</th>
+                    <th rowspan="2" class="text-end">Qty</th>
+                    <th rowspan="2" class="text-center">Unit</th>
+                    <th colspan="2">PO (USD)</th>
+                    <th rowspan="2" class="text-end">Kurs PO</th>
+                    <th colspan="2">PO (IDR)</th>
+                    <th rowspan="2" class="text-end">Kurs Landed</th>
+                    <th colspan="2">LANDED (IDR)</th>
+                    <th rowspan="2" class="text-end">+/-</th>
+                </tr>
+                <tr>
+                   
+                    <th class="text-center">Price</th>
+                    <th class="text-end">Amount</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Amount</th>
+                    <th class="text-end">Amount</th>
+                    <th class="text-end">HPP</th>
+                </tr>
+                </thead>
         <tbody>
           ${this.generateTableRows(result)}
         </tbody>
@@ -115,13 +143,13 @@ export default class ProsesdataKurPosting {
         <tr>
             <td>${index + 1}</td>
             <td>${item.Partid}</td>
-            <td>${item.PartName}</td>
+            <td class="text-start">${item.PartName}</td>
             <td class="text-end">${item.Qty}</td>
             <td class="text-center">${item.Unit}</td>
             <td class="text-end">${item.Price}</td>
             <td class="text-end">${item.Amount_USD}</td>
             <td class="text-end">${item.Kurs}</td>
-            <td class="text-end" id="${item.Hpp_Awal}">${Math.round(Number(item.Hpp_Awal || 0))}</td>
+            <td class="text-end " id="${item.Hpp_Awal}">${parseFloat(item.Hpp_Awal).toFixed(2)}</td>
             <td class="text-end">${item.Amount_Rp}</td>
             <td class="text-end" id="${item.kur_akhir}">${Math.round(Number(item.kur_akhir || 0))}</td>
             <td class="text-end">${item.Amount_RpAkhir}</td>

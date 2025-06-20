@@ -17,6 +17,12 @@ $(document).ready(function () {
     const pageMode = getPageMode();
 
    
+    // $("#testtable").on("click",function(e){
+    //     e.preventDefault();
+    //     new ProsesdataKur();
+    // })
+
+
     bindCommonEvents();
     // Pakai kondisi berdasarkan nilai mode
     if (pageMode === "edit") {

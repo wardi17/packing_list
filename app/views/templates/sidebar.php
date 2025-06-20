@@ -53,7 +53,7 @@ $pages = (isset($data['pages']))? $data['pages'] : '';
                 class="sidebar-item   <?php if ($pages == 'inputkrus') {echo 'active';} else {echo'';} ?>  " aria-current="page" >
                 <a href="<?= base_url; ?>/transaksikurs"  class='sidebar-link'>
                 <i class="fa-solid fa-right-to-bracket"></i>
-                    <span>Input pib</span>
+                    <span> Input biaya pib + fwd</span>
                 </a>    
 
             </li>

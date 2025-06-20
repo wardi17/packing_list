@@ -55,6 +55,17 @@ $userid =  $data["userid"];
 		  background-color: #F3FEB8 !important;
 		}
 
+label,
+input,
+textarea,span,
+select,button ,.select2-selection,.select2-results__option{
+  font-size: 12px !important;
+}
+table td, table th {
+    font-size: 12px;
+  }
+
+
 
   </style>
 <div id="main">
@@ -79,6 +90,7 @@ $userid =  $data["userid"];
                         
                         </div>
                           <div class="card-body">
+                            <!-- <button class="btn btn-primary" id="testtable">testtable</button> -->
                             <div class=" row col-md-12">
                               <div class="col-md-6">
                               <div class="row mb-12 mb-2">

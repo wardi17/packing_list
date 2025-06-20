@@ -30,6 +30,8 @@ class TransakiKurModel extends Models
     private $total_RpAkhir;
     private $total_Prosentase;  
     private $currid;
+    private $kurslanded;
+
     public function ProsesGetkur($post)
     {
         $nopo = $this->test_input($post["nopo"]);
@@ -49,12 +51,12 @@ class TransakiKurModel extends Models
                 "Price"           => number_format(rtrim(odbc_result($result, 'Price')), 4, '.', ','),
                 "Amount_USD"      => number_format(rtrim(odbc_result($result, 'Amount_USD')), 2, '.', ','),
                 "Kurs"            => number_format(rtrim(odbc_result($result, 'Kurs')), 0),
-                "Amount_Rp"       => number_format(rtrim(odbc_result($result, 'Amount_Rp')), 2, '.', ','),
+                "Amount_Rp"       => number_format(rtrim(odbc_result($result, 'Amount_Rp')), 0, '.', ','),
                 "kur_akhir"       => rtrim(odbc_result($result, 'kur_akhir')),
                 "Amount_RpAkhir"  => number_format(rtrim(odbc_result($result, 'Amount_RpAkhir')), 2, '.', ','),
                 "Total_Qty"       => number_format(rtrim(odbc_result($result, 'Total_Qty')), 2, '.', ','),
                 "Total_amount_USD"=> number_format(rtrim(odbc_result($result, 'Total_amount_USD')), 2, '.', ','),
-                "Total_amount_Rp" => number_format(rtrim(odbc_result($result, 'Total_amount_Rp')), 2, '.', ','),
+                "Total_amount_Rp" => number_format(rtrim(odbc_result($result, 'Total_amount_Rp')),0, '.', ','),
                 "Total_amount_Rpakhir" => number_format(rtrim(odbc_result($result, 'Total_amount_Rpakhir')), 2, '.', ','),
                 "Prosentase" => number_format(rtrim(odbc_result($result, 'Prosentase')), 2, '.', ','),
                  "Hpp_Awal"       => rtrim(odbc_result($result, 'Hpp_Awal')),
@@ -236,7 +238,7 @@ class TransakiKurModel extends Models
     {
         $No_Pls = $this->test_input($post["transnoHider"]);
         $query = "SELECT a.Partid, a.PartName, a.satuan AS Unit, a.Qty, a.Price, a.Amount_USD, a.Kurs, a.Amount_Rp,a.Kurs_Akhir, a.Amount_Akhir,
-        a.Hpp_Awal,a.Hpp_Akhir,a.Selisih_Hpp,
+         ISNULL(a.Hpp_Awal,0) AS Hpp_Awal, ISNULL(a.Hpp_Akhir,0) AS Hpp_Akhir, ISNULL(a.Selisih_Hpp,0) AS Selisih_Hpp,
         ISNULL(b.total_usd, 0) AS total_usd,
         ISNULL(b.total_rp, 0) AS total_rp,
         ISNULL(b.total_amountakhir, 0) AS total_amountakhir,
@@ -278,11 +280,11 @@ class TransakiKurModel extends Models
                 "Price"          => number_format($price, 4, '.', ','),
                 "Amount_USD"     => number_format($amount_usd, 2, '.', ','),
                 "Kurs"           => round($kurs, 0),
-                "Amount_Rp"      => number_format($amount_rp, 2, '.', ','),
+                "Amount_Rp"      => number_format($amount_rp, 0, '.', ','),
                 "kur_akhir"      =>$kurs_akhir,
                 "Amount_RpAkhir" => number_format($amount_akhir, 2, '.', ','),
                 "Total_amount_USD" => number_format($total_usd, 2, '.', ','),
-                "Total_amount_Rp" => number_format($total_rp, 2, '.', ','),
+                "Total_amount_Rp" => number_format($total_rp, 0, '.', ','),
                 "Total_amount_Rpakhir" => number_format($total_amountakhir, 2, '.', ','),
                 "Prosentase" => number_format($total_Prosentase, 2, '.', ','),
                 "Hpp_Awal"      =>$Hpp_Awal,
@@ -543,6 +545,7 @@ class TransakiKurModel extends Models
             $this->total_KursAkhir  = number_format(rtrim(odbc_result($result,'total_KursAkhir')), 0, '.', '.');
             $this->total_RpAkhir    = number_format(rtrim(odbc_result($result,'total_RpAkhir')), 0, ',', ',');
             $this->total_Prosentase = number_format(rtrim(odbc_result($result,'total_Prosentase')), 2, '.', '.');
+            $this->kurslanded       = number_format(rtrim(odbc_result($result,'Kurs_Akhir')),0, '.', '.');
             $this->currid           = rtrim(odbc_result($result,'currid'));
             $Hpp_Akhir = round(rtrim(odbc_result($result, 'Hpp_Akhir')),0);
             $Hpp_Awal = round(rtrim(odbc_result($result, 'Hpp_Awal')),0);
@@ -590,7 +593,8 @@ class TransakiKurModel extends Models
                 "total_KursAkhir"   =>$this->total_KursAkhir,
                 "total_RpAkhir"     =>$this->total_RpAkhir,
                 "total_Prosentase"  =>$this->total_Prosentase,
-                "currid"            =>$this->currid
+                "currid"            =>$this->currid,
+                "kurslanded"        =>$this->kurslanded
             ];
 
             $fulldata =[

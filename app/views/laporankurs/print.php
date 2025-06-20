@@ -51,6 +51,7 @@ class FPDF_AutoWrapTable extends FPDF {
         $total_RpAkhir   = $header["total_RpAkhir"];
         $total_Prosentase = $header["total_Prosentase"];
         $currid           = $header["currid"];
+        $kurslanded       = $header["kurslanded"];
       
          $this->ln(0);
         // Set font for the document
@@ -117,14 +118,14 @@ class FPDF_AutoWrapTable extends FPDF {
         $this->Cell(55, 5, 'Description', 1, 0, 'L'); 
         $this->Cell(18, 5, 'Qty', 1, 0, 'R');
         $this->Cell(10, 5, 'Unit', 1, 0, 'C');
-        $this->Cell(18, 5, "Price", 1, 0, 'R');
+        $this->Cell(18, 5, "Price Unit", 1, 0, 'R');
         $this->Cell(18, 5, "Amount", 1, 0, 'R');
         $this->Cell(18, 5, 'Kurs PO', 1, 0, 'R');
-        $this->Cell(18, 5, "Price", 1, 0, 'R');
+        $this->Cell(18, 5, "Price Unit", 1, 0, 'R');
         $this->Cell(18, 5, "Amount", 1, 0, 'R');
         $this->Cell(18, 5, 'Kurs Landed', 1, 0, 'R');
         $this->Cell(18, 5, 'Amount', 1, 0, 'R');
-        $this->Cell(18, 5, 'HPP', 1, 0, 'R');
+        $this->Cell(18, 5, 'HPP Unit', 1, 0, 'R');
          $this->Cell(15, 5, '+/-', 1, 1, 'R');
 
         $this->SetFont('Arial', '', 7);
@@ -218,7 +219,7 @@ class FPDF_AutoWrapTable extends FPDF {
          $this->SetXY($x, $y6);
          $this->Cell(55, 5,'PROSENTASE KENAIKAN HARGA LANDED',0,0, 'L');
          $this->Cell(2, 5,':',0,0, 'C');
-         $this->Cell(18, 5,$total_Prosentase ." %", 0,1, 'L');
+         $this->Cell(40, 5,$total_Prosentase ." %"." ( 1 ". $currid ." =  Rp. ".$kurslanded ." )", 0,1, 'L');
 
 
      $this->SetY(-100);
