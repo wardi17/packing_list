@@ -1,11 +1,3 @@
-USE [bambi-bmi]
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[POPAKINGLIST_KURS](
 	[No_Pls] [char](20) NOT NULL,
     [No_Pli] [char](20)  NULL,
@@ -36,22 +28,7 @@ CREATE TABLE [dbo].[POPAKINGLIST_KURS](
 	PRIMARY KEY(No_Pls)
 )
 
-ALTER  TABLE POPAKINGLIST_KURS
-ADD total_usd FLOAT DEFAULT 0,
- total_rp FLOAT DEFAULT 0, 
- total_amountakhir FLOAT DEFAULT 0,
- total_Prosentase FLOAT DEFAULT 0
 
-
-ALTER  TABLE POPAKINGLIST_KURS
-ADD  CONSTRAINT total_usd  DEFAULT 0 FOR  total_usd,
- CONSTRAINT total_rp  DEFAULT 0 FOR total_rp, 
- CONSTRAINT total_amountakhir  DEFAULT 0 FOR total_amountakhir ,
-CONSTRAINT  total_Prosentase  DEFAULT 0 FOR total_Prosentase
-
-
-
-GO
 
 CREATE TABLE FrowaderDetail(
 	trsID int IDENTITY(1,1) PRIMARY KEY,
@@ -81,9 +58,17 @@ CREATE TABLE FrowaderDetail(
 	Hpp_Akhir FLOAT DEFAULT 0,
 	Selisih_Hpp FLOAT DEFAULT 0
 	FOREIGN KEY (No_Pls) REFERENCES POPAKINGLIST_KURS(No_Pls)
- )
+ );
 
-ALTER TABLE POPAKINGLIST_KURSDETAIL
-ADD Hpp_Awal FLOAT DEFAULT 0,
-Hpp_Akhir FLOAT DEFAULT 0,
-Selisih_Hpp FLOAT DEFAULT 0
+
+ CREATE TABLE msForwader(
+    msID VARCHAR(20),
+    keterangan VARCHAR(1500) NOT NULL,
+    rumus CHAR(1) DEFAULT 'N',
+    hitungan CHAR(1) DEFAULT 'N',
+    status_aktif CHAR(1) DEFAULT 'Y',
+    user_input VARCHAR(100) NOT NULL,
+    date_input DATETIME  DEFAULT GETDATE(),
+    user_edit VARCHAR(100)  NULL,
+    date_edit DATETIME 
+)
