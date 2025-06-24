@@ -112,12 +112,12 @@ setTableProsesKur = (result) => {
                 </tr>
                 <tr>
                    
-                    <th class="text-center">Price</th>
+                    <th class="text-center">Price Unit</th>
                     <th class="text-end">Amount</th>
-                    <th class="text-end">Price</th>
+                    <th class="text-end">Price Unit</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Amount</th>
-                    <th class="text-end">HPP</th>
+                    <th class="text-end">HPP Unit</th>
                 </tr>
                 </thead>
 
@@ -130,8 +130,9 @@ setTableProsesKur = (result) => {
                         ${this.generateTotalRow(result)}
                     </tr>
                     <tr>
+                        <td colspan="3" class="text-end fw-bold" class"text-end fw-bold">PROSENTASE KENAIKAN HARGA LANDED :</td>
                         ${this.generateTotalProsentase(result)}
-                        <td colspan="11"></td>
+                       
                     </tr>
                 </tfoot>
             </table>
@@ -154,17 +155,26 @@ generateTableRows(data) {
             <td class="text-center">${item.Unit}</td>
             <td class="text-end">${item.Price}</td>
             <td class="text-end">${item.Amount_USD}</td>
-            <td class="text-end">${item.Kurs}</td>
+            <td class="text-end" >${item.Kurs}</td>
             <td class="text-end " id="${item.Hpp_Awal}">${parseFloat(item.Hpp_Awal).toFixed(2)}</td>
             <td class="text-end">${item.Amount_Rp}</td>
-            <td class="text-end" id="${item.kur_akhir}">${Math.round(Number(item.kur_akhir || 0))}</td>
-            <td class="text-end">${item.Amount_RpAkhir}</td>
-            <td class="text-end" id="${item.Hpp_Akhir}">${Math.round(Number(item.Hpp_Akhir || 0))}</td>
-            <td class="text-end" id="${item.Selisih_Hpp}">${Math.round(Number(item.Selisih_Hpp || 0))}</td>
+            <td class="text-end" id="${item.kur_akhir}">${item.kur_akhirtampil}</td>
+            <td class="text-end" id="${item.Amount_RpAkhir}">${item.Amount_RpAkhirTampil}</td>
+            <td class="text-end" id="${item.Hpp_Akhir}">${item.Hpp_AkhirTampil}</td>
+            <td class="text-end" id="${item.Selisih_Hpp}">${item.Selisih_HppTampil}</td>
         </tr>
     `).join('');
 }
 
+    setpaselhilangdesimal(data){
+        let kurs = parseFloat(data).toFixed(2);
+        let formatted = Number(kurs).toLocaleString('id-ID', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+       return formatted; // Contoh hasil: 12.345,67
+
+    }
       
 
      generateTotalRow(result){
@@ -197,12 +207,12 @@ generateTableRows(data) {
 
 
      generateTotalProsentase(result){
-            if (!Array.isArray(result)) return `<td colspan="3">Tidak ada data</td>`;
+            if (!Array.isArray(result)) return `<td >Tidak ada data</td>`;
             let total_Prosentase=""
               result.forEach(element => {
              total_Prosentase =element.Prosentase;
               });
-                let newrow =`<td colspan="3" id="total_Prosentase" class="text-end">${total_Prosentase}</td>`;
+                let newrow =`<td  id="total_Prosentase" class="text-start">${total_Prosentase}</td>`;
             return  newrow;
      }
 

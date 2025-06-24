@@ -88,8 +88,8 @@ appendCustomStyles() {
     const divid = $("#itemTabel");
     divid.empty();
 
-    const table = `
-     <div style="overflow-x:auto;">
+    let table = `
+        <div style="overflow-x:auto;">
             <table class="table table-striped table-hover table-bordered" id="table_kurdata">
             <thead id="thead">
                 <tr>
@@ -107,29 +107,31 @@ appendCustomStyles() {
                 </tr>
                 <tr>
                    
-                    <th class="text-center">Price</th>
+                    <th class="text-center">Price Unit</th>
                     <th class="text-end">Amount</th>
-                    <th class="text-end">Price</th>
+                    <th class="text-end">Price Unit</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Amount</th>
-                    <th class="text-end">HPP</th>
+                    <th class="text-end">HPP Unit</th>
                 </tr>
                 </thead>
-        <tbody>
-          ${this.generateTableRows(result)}
-        </tbody>
-        <tfoot>
-            <tr>
-            <td colspan="3" class="text-end fw-bold">Total:</td>
-            ${this.generateTotalRow(result)}
-          </tr>
-           <tr>
-            ${this.generateTotalProsentase(result)}
-            <td colspan="8"></td>
-            </tr>
-        </tfoot>
-      </table>
-       </div>`;
+
+                <tbody>
+                    ${this.generateTableRows(result)}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold">Total:</td>
+                        ${this.generateTotalRow(result)}
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold" class"text-end fw-bold">PROSENTASE KENAIKAN HARGA LANDED :</td>
+                        ${this.generateTotalProsentase(result)}
+                       
+                    </tr>
+                </tfoot>
+            </table>
+        </div>`;
 
     divid.html(table);
   }
@@ -139,8 +141,8 @@ appendCustomStyles() {
       return `<tr><td colspan="14">Tidak ada data</td></tr>`;
     }
 
-    return data.map((item, index) => `
-        <tr>
+       return data.map((item, index) => `
+         <tr>
             <td>${index + 1}</td>
             <td>${item.Partid}</td>
             <td class="text-start">${item.PartName}</td>
@@ -148,13 +150,13 @@ appendCustomStyles() {
             <td class="text-center">${item.Unit}</td>
             <td class="text-end">${item.Price}</td>
             <td class="text-end">${item.Amount_USD}</td>
-            <td class="text-end">${item.Kurs}</td>
+            <td class="text-end" >${item.Kurs}</td>
             <td class="text-end " id="${item.Hpp_Awal}">${parseFloat(item.Hpp_Awal).toFixed(2)}</td>
             <td class="text-end">${item.Amount_Rp}</td>
-            <td class="text-end" id="${item.kur_akhir}">${Math.round(Number(item.kur_akhir || 0))}</td>
-            <td class="text-end">${item.Amount_RpAkhir}</td>
-            <td class="text-end" id="${item.Hpp_Akhir}">${Math.round(Number(item.Hpp_Akhir || 0))}</td>
-            <td class="text-end" id="${item.Selisih_Hpp}">${Math.round(Number(item.Selisih_Hpp || 0))}</td>
+            <td class="text-end" id="${item.kur_akhir}">${item.kur_akhirtampil}</td>
+            <td class="text-end" id="${item.Amount_RpAkhir}">${item.Amount_RpAkhirTampil}</td>
+            <td class="text-end" id="${item.Hpp_Akhir}">${item.Hpp_AkhirTampil}</td>
+            <td class="text-end" id="${item.Selisih_Hpp}">${item.Selisih_HppTampil}</td>
         </tr>
     `).join('');
   }
@@ -193,7 +195,7 @@ appendCustomStyles() {
               result.forEach(element => {
              total_Prosentase =element.Prosentase;
               });
-                let newrow =`<td colspan="3" id="total_Prosentase" class="text-end">${total_Prosentase}</td>`;
+                let newrow =`<td colspan="3" id="total_Prosentase" class="text-start">${total_Prosentase}</td>`;
             return  newrow;
      }
 }
