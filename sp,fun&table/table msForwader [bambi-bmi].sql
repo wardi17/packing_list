@@ -16,3 +16,32 @@ CREATE TABLE msForwader(
 ALTER TABLE msForwader 
 ADD status_aktif CHAR(1) DEFAULT 'Y';
 
+
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES ('Biaya Freight Charge (Ongkos Kirim)', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES ('Biaya Trucking / Inland Transportation', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES ('Biaya Handling Charges', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya Terminal Handling Charges (THC)', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya BL / AWB Fee', 'N', 'N', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya Custom Clearance', 'N', 'N', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya PEB / PIB', 'N', 'N', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES ('Biaya Storage Fee', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES ('Biaya Demurrage & Detention', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES ('Biaya Asuransi Barang', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya Karantina / Inspeksi', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya Service Fee Forwarder', 'N', 'Y', 'Y', 'admin');
+INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)
+VALUES('Biaya Door to Door Service', 'N', 'Y', 'Y', 'admin');
+
+

@@ -82,5 +82,14 @@ class MsForwader  extends Controller {
 	}
 
 	
+	public function tampilforwadereditfinal(){
+		$data= $this->model('MsForwaderModel')->TampilForwaderEditFinal($_POST);
+			if(empty($data)){
+				$data = null;
+				echo json_encode($data);
+			}else{
+				echo json_encode($data);
+			}
+	}
 			 
 }

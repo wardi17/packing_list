@@ -125,4 +125,28 @@ class MsForwaderModel  extends  Models{
        
                 return $datas;
         }
+
+
+
+        public function TampilForwaderEditFinal($post){
+            $transnoHider = $this->test_input($post["transnoHider"]);
+            $query ="usp_GetForwaderEditFinalByID '".$transnoHider."'";
+            // die(var_dump($query));
+             $result = $this->db->baca_sql2($query);
+                $datas = [];
+                while(odbc_fetch_row($result)){
+                      $datas[] =[
+                        "msID"          =>rtrim(odbc_result($result,'msID')),
+                        "keterangan"    =>rtrim(odbc_result($result,'keterangan')),
+                        "rumus"         =>rtrim(odbc_result($result,'rumus')),
+                        "hitungan"      =>rtrim(odbc_result($result,'hitungan')),
+                        //"amount"       =>rtrim(odbc_result($result,'amount')),
+                        "amount"       =>number_format(rtrim(odbc_result($result,'amount')),0, '.', ','),
+                        "total_hitungan"    =>number_format(rtrim(odbc_result($result,'total_hitungan')),0, '.', ','),
+                        "total_rumus"       =>number_format(rtrim(odbc_result($result,'total_rumus')),0, '.', ','),
+                      ];
+                }
+       
+                return $datas;
+        }
 }

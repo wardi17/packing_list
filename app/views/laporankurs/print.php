@@ -2,6 +2,7 @@
 
 class FPDF_AutoWrapTable extends FPDF {
     private $data = array();
+    private $status;
     private $options = array();
     public $widths;
     public $aligns;
@@ -12,8 +13,9 @@ class FPDF_AutoWrapTable extends FPDF {
             'mm', 
             $options['paper_size']
         );
-
-        $this->data = $data;
+    
+        $this->data = $data["datas"];
+        $this->status = $data["status"];
         $this->options = $options;
     }
 
@@ -104,7 +106,7 @@ class FPDF_AutoWrapTable extends FPDF {
         $this->SetX(10);
         //untuk headr atas
  
-        $this->Cell(106, 5, '',0, 0, 'C');
+        $this->Cell(106, 5,$this->status,0, 0, 'L');
         $this->Cell(36, 5, 'PO ('.$currid.')'  , 1, 0, 'C');
         $this->Cell(18, 5, '',0, 0, 'R');
         $this->Cell(36, 5, 'PO (IDR)',1, 0, 'C');

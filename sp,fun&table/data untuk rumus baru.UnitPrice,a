@@ -13,3 +13,13 @@ SELECT a.Partid,a.PartName,a.UnitPrice,a.satuan,a.itemprice,a.kurs,b.pib
 4. saat simpan langsung get data dari podetail 
 5. buat rumus perhitungan pak iwan
 6. simpan ke table baru 
+
+
+ SET @kurs_akhir = (@total_amount_rp + @totolpib) / @total_amount_USD; rumus khurs
+ 	
+  Price * @kurs_akhir AS Hpp_Akhir     :rumus hpp Hpp_Akhir
+  
+  Hpp_Akhir - Hpp_Awal AS Selisih_Hpp  : rumus  Selisih_Hpp
+
+
+SET @prosentase = (((@total_amount_akhir - @total_amount_rp)/@total_amount_rp) * 100); : rumus prosentase

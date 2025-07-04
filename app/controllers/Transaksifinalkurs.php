@@ -1,11 +1,10 @@
 <?php
 
-class TransaksiKurs extends Controller {
+class Transaksifinalkurs extends Controller {
 
 	protected $userid;
 	public function __construct()
 	{	
-	
 		
 		if($_SESSION['login_user'] == '') {
 			Flasher::setMessage('Login','Tidak ditemukan.','danger');
@@ -19,27 +18,38 @@ class TransaksiKurs extends Controller {
 		public function index()
 		{
 	
-			$data['pages'] = "inputkrus";
+			$data['pages'] = "inputkrusfinal";
 			$data['page'] = "trans";
 			$this->view('templates/header');
 			$this->view('templates/sidebar',$data);
-			$this->view('transaksikurs/index', $data);
+			$this->view('transaksifinalkurs/index', $data);
 			$this->view('templates/footer');
 		}
 
 
+        public function ListData(){
+                $data= $this->model('TransakiKurFinalModel')->ListData($_POST);
+                        
+                if(empty($data)){
+                    $data = null;
+                    echo json_encode($data);
+                }else{
+                    echo json_encode($data);
+                }
+            }
+
+
+       
 		public function tambah()
 		{
-			$token = CsrfToken::generate();
-		
-			$tanggal = date("Y-m-d");
-			$data['pages'] = "inputkrus";
+			$data['pages'] = "inputkrusfinal";
 			$data['page'] = "trans";
+			$data['datapost'] =$_POST;
 			$data["userid"] =$this->userid;
 			$data['Supplier'] = $this->model('Supplier')->Tampildata();
 			$this->view('templates/header');
 			$this->view('templates/sidebar',$data);
-			$this->view('transaksikurs/tambah', $data);
+			$this->view('transaksifinalkurs/tambah', $data);
 			$this->view('templates/footer');
 		}
 
@@ -56,21 +66,13 @@ class TransaksiKurs extends Controller {
 		}
 
 
-	public function ProsesGetkur(){
-		$data= $this->model('TransakiKurModel')->ProsesGetkur($_POST);
-			if(empty($data)){
-				$data = null;
-				echo json_encode($data);
-			}else{  
-				echo json_encode($data);
-			}
-	}
+
 
 	public function SaveData(){
-		//$jsondata = json_encode($_POST);
-		// die(var_dump('wardi'));
+		// $jsondata = json_encode($_POST);
+		// die(var_dump($jsondata));
 		$post = json_decode(file_get_contents("php://input"), true);
-        $data= $this->model('TransakiKurModel')->SaveData($post);
+        $data= $this->model('TransakiKurFinalModel')->SaveData($post);
         if(empty($data)){
             $data = null;
             echo json_encode($data);
@@ -79,33 +81,43 @@ class TransaksiKurs extends Controller {
         }
     }
 
-	public function ListData(){
-			$data= $this->model('TransakiKurModel')->ListData($_POST);
-					
+
+	public function listfinal(){
+			$data['pages'] = "listkrusfinal";
+			$data['page'] = "trans";
+			$this->view('templates/header');
+			$this->view('templates/sidebar',$data);
+			$this->view('transaksifinalkurs/listfinal', $data);
+			$this->view('templates/footer');
+	}
+
+	public function listdatafinal(){
+			$data= $this->model('TransakiKurFinalModel')->Listdatafinal($_POST);
 			if(empty($data)){
 				$data = null;
 				echo json_encode($data);
-			}else{
+			}else{  
 				echo json_encode($data);
 			}
-		}
+	}
+
 
 
 		public function edit(){
-			$data['pages'] = "inputkrus";
+			$data['pages'] = "listkrusfinal";
 			$data['page'] = "trans";
 			$data['datapost'] =$_POST;
 			$data["userid"] =$this->userid;
 			$data['Supplier'] = $this->model('Supplier')->Tampildata();
 			$this->view('templates/header');
 			$this->view('templates/sidebar',$data);
-			$this->view('transaksikurs/edit', $data);
+			$this->view('transaksifinalkurs/edit', $data);
 			$this->view('templates/footer');
 		}
 
 
    public function ProsesGetkurEdit(){
-		$data= $this->model('TransakiKurModel')->ProsesGetkurEdit($_POST);
+		$data= $this->model('TransakiKurFinalModel')->ProsesGetkurEdit($_POST);
 			if(empty($data)){
 				$data = null;
 				echo json_encode($data);
@@ -116,7 +128,7 @@ class TransaksiKurs extends Controller {
 
 	public function UpdateData(){
 		$post = json_decode(file_get_contents("php://input"), true);
-	 $data= $this->model('TransakiKurModel')->UpdateData($post);
+	 $data= $this->model('TransakiKurFinalModel')->UpdateData($post);
         if(empty($data)){
             $data = null;
             echo json_encode($data);
@@ -126,7 +138,7 @@ class TransaksiKurs extends Controller {
 	}
 
 	public function Deletedata(){
-		$data= $this->model('TransakiKurModel')->DeleteAll($_POST);
+		$data= $this->model('TransakiKurFinalModel')->DeleteAll($_POST);
         if(empty($data)){
             $data = null;
             echo json_encode($data);
@@ -137,14 +149,14 @@ class TransaksiKurs extends Controller {
 
 
 		public function posting(){
-			$data['pages'] = "inputkrus";
+			$data['pages'] = "listkrusfinal";
 			$data['page'] = "trans";
 			$data['datapost'] =$_POST;
 			$data["userid"] =$this->userid;
 			$data['Supplier'] = $this->model('Supplier')->Tampildata();
 			$this->view('templates/header');
 			$this->view('templates/sidebar',$data);
-			$this->view('transaksikurs/posting', $data);
+			$this->view('transaksifinalkurs/posting', $data);
 			$this->view('templates/footer');
 		}
 
@@ -152,7 +164,7 @@ class TransaksiKurs extends Controller {
 
 	public function postingdata(){
 		$post = json_decode(file_get_contents("php://input"), true);
-        $data= $this->model('TransakiKurModel')->PostingData($post);
+        $data= $this->model('TransakiKurFinalModel')->PostingData($post);
         if(empty($data)){
             $data = null;
             echo json_encode($data);
@@ -163,16 +175,17 @@ class TransaksiKurs extends Controller {
 
 
 		public function postlist(){
-			$data['pages'] = "post";
+			$data['pages'] = "postfinal";
 			$data['page'] = "post";
 			$this->view('templates/header');
 			$this->view('templates/sidebar',$data);
-			$this->view('transaksikurs/postlist', $data);
+			$this->view('transaksifinalkurs/postlist', $data);
 			$this->view('templates/footer');
 		}
 
 		public function ListSudahPosting(){
-			$data= $this->model('TransakiKurModel')->ListSudahPosting($_POST);
+		
+			$data= $this->model('TransakiKurFinalModel')->ListSudahPosting($_POST);
 					
 			if(empty($data)){
 				$data = null;
@@ -183,14 +196,14 @@ class TransaksiKurs extends Controller {
 		}
 
 		public function Details(){
-			$data['pages'] = "post";
+			$data['pages'] = "postfinal";
 			$data['page'] = "trans";
 			$data['datapost'] =$_POST;
 			$data["userid"] =$this->userid;
 			$data['Supplier'] = $this->model('Supplier')->Tampildata();
 			$this->view('templates/header');
 			$this->view('templates/sidebar',$data);
-			$this->view('transaksikurs/details', $data);
+			$this->view('transaksifinalkurs/details', $data);
 			$this->view('templates/footer');
 		}
 }

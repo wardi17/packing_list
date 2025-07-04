@@ -1,10 +1,9 @@
 <?php
-date_default_timezone_set('Asia/Jakarta');
-class TransakiKurModel extends Models
-{
-    private $tablehead = "[bambi-bmi].[dbo].POPAKINGLIST_KURS";
-    private $table_fro = "[bambi-bmi].[dbo].FrowaderDetail";
-    private $table_dtl = "[bambi-bmi].[dbo].POPAKINGLIST_KURSDETAIL";
+
+class TransakiKurFinalModel extends Models {
+    private $tablehead = "[bambi-bmi].[dbo].POPAKINGLIST_KURS_Temporary";
+    private $table_fro = "[bambi-bmi].[dbo].FrowaderDetail_Temporary";
+    private $table_dtl = "[bambi-bmi].[dbo].POPAKINGLIST_KURSDETAIL_Temporary";
 
     private $No_Pli;
     private $NoPO;
@@ -32,58 +31,57 @@ class TransakiKurModel extends Models
     private $currid;
     private $kurslanded;
 
-    public function ProsesGetkur($post)
-    {
-        $nopo = $this->test_input($post["nopo"]);
-        $totolpib = $this->test_input($post["totolpib"]);
-        $query = "USP_TampildataKur '{$nopo}','{$totolpib}'";
+    public function ListData($post){
+         $userid = $this->test_input($post["userid"]);
+        if($userid == "wardi" || $userid =="herman"){
+            $status ="Y";
+        }else{
+            $status ="N";
+        }
+        $tahun = $this->test_input($post["tahun"]);
 
+        $query ="USP_FinalPakingList '".$status."','".$tahun."','".$userid."' ";
+
+        
         $result = $this->db->baca_sql2($query);
-        $datas = [];
 
+        $datas = [];
         while (odbc_fetch_row($result)) {
             $datas[] = [
-                "DOTransacID"     => rtrim(odbc_result($result, 'DOTransacID')),
-                "Partid"          => rtrim(odbc_result($result, 'Partid')),
-                "PartName"        => rtrim(odbc_result($result, 'PartName')),
-                "Unit"            => rtrim(odbc_result($result, 'Unit')),
-                "Qty"             => number_format(rtrim(odbc_result($result, 'Qty')), 2, '.', ','),
-                "Price"           => number_format(rtrim(odbc_result($result, 'Price')), 4, '.', ','),
-                "Amount_USD"      => number_format(rtrim(odbc_result($result, 'Amount_USD')), 2, '.', ','),
-                "Kurs"            => number_format(rtrim(odbc_result($result, 'Kurs')), 0),
-                "Amount_Rp"       => number_format(rtrim(odbc_result($result, 'Amount_Rp')), 0, '.', ','),
-                "kur_akhir"       => rtrim(odbc_result($result, 'kur_akhir')),
-                "Amount_RpAkhir"  => number_format(rtrim(odbc_result($result, 'Amount_RpAkhir')), 2, '.', ','),
-                "Total_Qty"       => number_format(rtrim(odbc_result($result, 'Total_Qty')), 2, '.', ','),
-                "Total_amount_USD"=> number_format(rtrim(odbc_result($result, 'Total_amount_USD')), 2, '.', ','),
-                "Total_amount_Rp" => number_format(rtrim(odbc_result($result, 'Total_amount_Rp')),0, '.', ','),
-                "Total_amount_Rpakhir" => number_format(rtrim(odbc_result($result, 'Total_amount_Rpakhir')),0, '.', ','),
-                "Prosentase" => number_format(rtrim(odbc_result($result, 'Prosentase')), 2, '.', ','),
-                 "Hpp_Awal"       => rtrim(odbc_result($result, 'Hpp_Awal')),
-                 "Hpp_Akhir"      => rtrim(odbc_result($result, 'Hpp_Akhir')),
-                 "Selisih_Hpp"    => rtrim(odbc_result($result, 'Selisih_Hpp')),
-                 "Amount_RpAkhirTampil"=> number_format(rtrim(odbc_result($result, 'Amount_RpAkhir')), 0, '.', ','),
-                 "Hpp_AkhirTampil" => number_format(rtrim(odbc_result($result, 'Hpp_Akhir')), 0, '.', ','),
-                 "Selisih_HppTampil" => number_format(rtrim(odbc_result($result, 'Selisih_Hpp')), 0, '.', ','),
-                "kur_akhirtampil" => number_format(rtrim(odbc_result($result, 'kur_akhir')), 0),
-
+                "No_Pls"      => $this->getOdbcValue($result, 'No_Pls'),
+                "No_Pli"      => $this->getOdbcValue($result, 'No_Pli'),
+                "NoPo"        => $this->getOdbcValue($result, 'NoPo'),
+                "id_bl_awb"   => $this->getOdbcValue($result, 'id_bl_awb'),
+                "POTransacid" => $this->getOdbcValue($result, 'POTransacid'),
+                "EntryDate"   => $this->getOdbcValue($result, 'EntryDate'),
+                "Note"        => $this->getOdbcValue($result, 'Note'),
+                "supid"       => $this->getOdbcValue($result, 'supid'),
+                "userid"      => $this->getOdbcValue($result, 'userid'),
+                "Totaldetail" => (int) $this->getOdbcValue($result, 'Totaldetail'),
+                "Pib"         => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Pib')),
+                "Forwarder"   => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Forwarder')),
+                "Total"       => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Total')),
+                "Status"      => $status
             ];
         }
 
         return $datas;
     }
 
-
-    private function CekHeadr($transo)
+       private function getOdbcValue($result, $field)
     {
-        $query = "SELECT DISTINCT No_Pls FROM {$this->tablehead} WHERE No_Pls = '{$transo}'";
-        $result = $this->db->baca_sql2($query);
-        $rows = odbc_fetch_array($result);
-        return $rows > 0 ? 1 : 0;
+        return rtrim(odbc_result($result, $field));
     }
 
 
-    public function SaveData($post)
+    private function formatNumberOrEmpty($value)
+    {
+        return (floatval($value) == 0) ? "" : number_format($value, 0, '.', ',');
+    }
+
+
+
+      public function SaveData($post)
     {
         $dataheader     = $post["dataheader"];
         $detailforwader = $post["detailforwader"];
@@ -105,8 +103,91 @@ class TransakiKurModel extends Models
         return ['nilai' => 0, 'error' => 'Gagal Simpan Data, Header sudah ada'];
     }
 
+       private function CekHeadr($transo)
+    {
+        $query = "SELECT DISTINCT No_Pls FROM {$this->tablehead} WHERE No_Pls = '{$transo}'";
+        $result = $this->db->baca_sql2($query);
+        $rows = odbc_fetch_array($result);
+        return $rows > 0 ? 1 : 0;
+    }
 
-    private function Simpandetailkurdata($transo, $detailkurdata)
+
+    
+    private function simpadataHider($header)
+    {
+      
+        $dateTime = DateTime::createFromFormat('d/m/Y', $this->test_input($header["tanggal"]));
+        $formattedDate = $dateTime ? $dateTime->format('Y-m-d H:i:s') : '';
+
+        $query = "
+            EXEC USP_INSERT_POAKINGLIST_KURS_HeaderTemporary
+            '{$this->test_input($header["transo"])}',
+            '{$this->test_input($header["idpackinglist"])}',
+            '{$this->test_input($header["suplieid"])}',
+            '{$this->test_input($header["nodo"])}',
+            '{$this->test_input($header["nopo"])}',
+            '{$formattedDate}',
+            {$this->sql_escape_odbc($header["keterangan"])},
+            '{$_SESSION['login_user']}',
+            '{$this->test_input($header["pib"])}',
+            '{$this->test_input($header["forwarder"])}',
+            '{$this->test_input($header["total"])}',
+            '{$this->test_input($header["id_bl_awb"])}',
+            '{$this->test_input($header["total_usd"])}',
+            '{$this->test_input($header["total_rp"])}',
+            '{$this->test_input($header["total_amountakhir"])}',
+            '{$this->test_input($header["total_Prosentase"])}'
+        ";
+
+   //$this->consol_war($query);
+        return $this->db->baca_sql2($query) ? 1 : 0;
+    }
+
+   private function SimpandetaiForwader($transo, $detailforwader)
+    {
+        // Jika data kosong, ambil data default dari temporary
+        if (count($detailforwader) == 0) {
+            return $this->addForwaderdetaitemp($transo);
+        }
+
+        $success = true;
+
+        foreach ($detailforwader as $item) {
+            // Sanitasi input untuk mencegah SQL injection atau karakter ilegal
+            $msID     = $this->test_input($item["msID"]);
+            $rumus    = $this->test_input($item["rumus"]);
+            $hitungan = $this->test_input($item["hitungan"]);
+            $amount   = $this->test_input($item["amount"]);
+
+            // Buat query insert
+            $query = "
+                INSERT INTO {$this->table_fro} (No_Pls, msID, rumus, hitungan, amount)
+                VALUES (
+                    '{$transo}',
+                    '{$msID}',
+                    '{$rumus}',
+                    '{$hitungan}',
+                    '{$amount}'
+                )
+            ";
+
+            // Eksekusi query
+            if (!$this->db->baca_sql2($query)) {
+                $success = false;
+            }
+        }
+
+        // Return hasil
+        return $success ? 1 : 0;
+    }
+
+
+        private function addForwaderdetaitemp($transo){
+            $query ="USP_InsertForwaderTemp '{$transo}'"; //tandasampai sinih 
+            return $this->db->baca_sql2($query) ? 1 : 0;
+        }
+
+      private function Simpandetailkurdata($transo, $detailkurdata)
     {
         $success = true;
         $no = 1;
@@ -151,69 +232,18 @@ class TransakiKurModel extends Models
     }
 
 
-    private function SimpandetaiForwader($transo, $detailforwader)
-    {
-        $success = true;
-
-        foreach ($detailforwader as $item) {
-            $query = "
-                INSERT INTO {$this->table_fro} (No_Pls, msID, rumus, hitungan, amount)
-                VALUES (
-                    '{$transo}',
-                    '{$this->test_input($item["msID"])}',
-                    '{$this->test_input($item["rumus"])}',
-                    '{$this->test_input($item["hitungan"])}',
-                    '{$this->test_input($item["amount"])}'
-                )
-            ";
-
-            if (!$this->db->baca_sql2($query)) {
-                $success = false;
-            }
-        }
-
-        return $success ? 1 : 0;
-    }
-
-
-    private function simpadataHider($header)
-    {
-      
-        $dateTime = DateTime::createFromFormat('d/m/Y', $this->test_input($header["tanggal"]));
-        $formattedDate = $dateTime ? $dateTime->format('Y-m-d H:i:s') : '';
-
-        $query = "
-            EXEC USP_INSERT_POAKINGLIST_KURS_Header
-            '{$this->test_input($header["transo"])}',
-            '{$this->test_input($header["idpackinglist"])}',
-            '{$this->test_input($header["suplieid"])}',
-            '{$this->test_input($header["nodo"])}',
-            '{$this->test_input($header["nopo"])}',
-            '{$formattedDate}',
-            {$this->sql_escape_odbc($header["keterangan"])},
-            '{$_SESSION['login_user']}',
-            '{$this->test_input($header["pib"])}',
-            '{$this->test_input($header["forwarder"])}',
-            '{$this->test_input($header["total"])}',
-            '{$this->test_input($header["id_bl_awb"])}',
-            '{$this->test_input($header["total_usd"])}',
-            '{$this->test_input($header["total_rp"])}',
-            '{$this->test_input($header["total_amountakhir"])}',
-            '{$this->test_input($header["total_Prosentase"])}'
-        ";
-
-  //$this->consol_war($query);
-        return $this->db->baca_sql2($query) ? 1 : 0;
-    }
-
-
-    public function ListData($post)
-    {
+    public function Listdatafinal($post){
         $userid = $this->test_input($post["userid"]);
-        $status = ($userid == "wardi" || $userid == "herman") ? "Y" : "N";
+        if($userid == "wardi" || $userid =="herman"){
+            $status ="Y";
+        }else{
+            $status ="N";
+        }
         $tahun = $this->test_input($post["tahun"]);
 
-        $query = "USP_TampilListKurPakingList '{$status}', '{$tahun}', '{$userid}'";
+        $query ="USP_TampilDataFinalPakingList '".$status."','".$tahun."','".$userid."' ";
+
+  
         $result = $this->db->baca_sql2($query);
 
         $datas = [];
@@ -239,8 +269,7 @@ class TransakiKurModel extends Models
         return $datas;
     }
 
-
-    public function ProsesGetkurEdit($post)
+       public function ProsesGetkurEdit($post)
     {
         $No_Pls = $this->test_input($post["transnoHider"]);
         $query = "SELECT a.Partid, a.PartName, a.satuan AS Unit, a.Qty, a.Price, a.Amount_USD, a.Kurs, a.Amount_Rp,a.Kurs_Akhir, a.Amount_Akhir,
@@ -310,19 +339,7 @@ class TransakiKurModel extends Models
     }
 
 
-    private function getOdbcValue($result, $field)
-    {
-        return rtrim(odbc_result($result, $field));
-    }
-
-    private function formatNumberOrEmpty($value)
-    {
-        return (floatval($value) == 0) ? "" : number_format($value, 0, '.', ',');
-    }
-
-
-
-  public function UpdateData($post)
+      public function UpdateData($post)
     {
         
         
@@ -345,13 +362,13 @@ class TransakiKurModel extends Models
 
     }
 
-     private function updatedataHider($header)
+      private function updatedataHider($header)
     {
         $dateTime = DateTime::createFromFormat('d/m/Y', $this->test_input($header["tanggal"]));
         $formattedDate = $dateTime ? $dateTime->format('Y-m-d H:i:s') : '';
         $dateupdate    = date('Y-m-d H:i:s');
         $query = "
-            EXEC USP_UPDATE_POAKINGLIST_KURS_Header
+            EXEC USP_UPDATE_POAKINGLIST_KURS_HeaderTemporary
             '{$this->test_input($header["transo"])}',
             '{$this->test_input($header["idpackinglist"])}',
             '{$this->test_input($header["suplieid"])}',
@@ -376,36 +393,34 @@ class TransakiKurModel extends Models
         return $this->db->baca_sql2($query) ? 1 : 0;
     }
 
-      private function UpdatedetaiForwader($transo, $detailforwader)
-    {
-            // Jika array detail kosong, tidak ada yang perlu di-update
-        if (count($detailforwader) === 0) {
-            return 1;
-        }
-       
-
-            $success = true;
-
-            // Simpan ulang data berdasarkan detail baru
-            foreach ($detailforwader as $item) {
-                $query = "
-                    UPDATE $this->table_fro SET  rumus ='{$this->test_input($item["rumus"])}', hitungan='{$this->test_input($item["hitungan"])}', 
-                    amount='{$this->test_input($item["amount"])}'
-                    WHERE No_Pls ='{$transo}'AND msID='{$this->test_input($item["msID"])}'
-                ";
-
-                if (!$this->db->baca_sql2($query)) {
-                    $success = false;
-                }
+    private function UpdatedetaiForwader($transo, $detailforwader)
+        {
+                // Jika array detail kosong, tidak ada yang perlu di-update
+            if (count($detailforwader) === 0) {
+                return 1;
             }
+        
 
-        return $success ? 1 : 0;
-    }
+                $success = true;
+
+                // Simpan ulang data berdasarkan detail baru
+                foreach ($detailforwader as $item) {
+                    $query = "
+                        UPDATE $this->table_fro SET  rumus ='{$this->test_input($item["rumus"])}', hitungan='{$this->test_input($item["hitungan"])}', 
+                        amount='{$this->test_input($item["amount"])}'
+                        WHERE No_Pls ='{$transo}'AND msID='{$this->test_input($item["msID"])}'
+                    ";
+
+                    if (!$this->db->baca_sql2($query)) {
+                        $success = false;
+                    }
+                }
+
+            return $success ? 1 : 0;
+        }
 
 
-    
-
- private function Updatedetailkurdata($transo, $detailkurdata)
+    private function Updatedetailkurdata($transo, $detailkurdata)
     {
 
        // Cek apakah proses delete berhasil
@@ -460,8 +475,7 @@ class TransakiKurModel extends Models
         ];
     }
 
-
-    private function DeleteDetailKurdata($transo){
+        private function DeleteDetailKurdata($transo){
          $query = "DELETE FROM {$this->table_dtl} WHERE No_Pls = '{$transo}'";
             $result = $this->db->baca_sql2($query);
                 $cek = $result ? 0 : 1;
@@ -502,35 +516,14 @@ class TransakiKurModel extends Models
     }
 
 
-    public function PostingData($post){
-
-        $transo = $this->test_input($post["transnoHider"]);
-        $dataposting    = date('Y-m-d H:i:s');
-        $success = true;
-
-        $query ="UPDATE $this->tablehead SET UserPosting='{$_SESSION['login_user']}',FlagPosting='Y', DatePosting='{$dataposting}'
-        WHERE  No_Pls='".$transo."'
-        ";
-            if (!$this->db->baca_sql($query)) {
-                $success = false;
-            }
-
-          return [
-            'nilai' => $success ? 1 : 0,
-            'error' => $success ? 'Berhasil Posting Data' : 'Gagal Posting Data'
-        ];
-    }
-
-
-
-    public function cetakprint($post){
+      public function cetakprint($post){
        
         $DOTransacID = $this->test_input($post["POTransacid"]);
         $transnoHider = $this->test_input($post["No_Pls"]);
 
-        $query="USP_CetakPakingListKurs '{$transnoHider}','{$DOTransacID}'";
+        $query="USP_CetakPakingListKursFinal '{$transnoHider}','{$DOTransacID}'";
 
-        //$this->consol_war($query);
+       // $this->consol_war($query);
        $datas = [];
        $result = $this->db->baca_sql2($query);
         while(odbc_fetch_row($result)){
@@ -619,7 +612,29 @@ class TransakiKurModel extends Models
     }
 
 
-     public function ListSudahPosting($post){
+
+        public function PostingData($post){
+
+        $transo = $this->test_input($post["transnoHider"]);
+         $userid = $this->test_input($post["userid"]);
+        $dataposting    = date('Y-m-d H:i:s');
+        $success = true;
+
+        $query ="USP_PostingDataKurFinal '{$transo}','{$userid}','{$dataposting}'";
+        //$this->consol_war($query);
+
+            if (!$this->db->baca_sql2($query)) {
+                $success = false;
+            }
+
+          return [
+            'nilai' => $success ? 1 : 0,
+            'error' => $success ? 'Berhasil Posting Data' : 'Gagal Posting Data'
+        ];
+    }
+
+
+       public function ListSudahPosting($post){
         $status ="";
 
         $userid = $this->test_input($post["userid"]);
@@ -631,9 +646,9 @@ class TransakiKurModel extends Models
         }
         $tahun = $this->test_input($post["tahun"]);
 
-        $query ="USP_List_KursSudahPosting '".$status."','".$tahun."','".$userid."' ";
+        $query ="USP_List_KursSudahPostingFinal '".$status."','".$tahun."','".$userid."' ";
 
-       // $this->consol_war($query);
+        //$this->consol_war($query);
         
         $result = $this->db->baca_sql2($query);
         $datas = [];
@@ -664,6 +679,7 @@ class TransakiKurModel extends Models
        }
 
 
+       
     public function ListLaporan($post){
         $tgl_from = $post["tgl_from"];
         $date_from = $this->ChangeDate($tgl_from);
@@ -703,4 +719,5 @@ class TransakiKurModel extends Models
         $formattedDate = $dateTime->format('Y-m-d');
         return $formattedDate;
      }
+
 }

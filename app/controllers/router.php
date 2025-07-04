@@ -5,6 +5,7 @@ class Router {
     public $controler =[
          "msfor"      =>"MsForwader",
          "transkur"   =>"TransaksiKurs",
+         "transkurfinal" =>"Transaksifinalkurs",
     ];
 
 

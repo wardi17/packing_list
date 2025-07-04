@@ -1,5 +1,6 @@
 <?php 
-
+// $log_fin  = isset($_SESSION["log_fin"]) ? $_SESSION["log_fin"] : '';
+$log_fam  = isset($_SESSION["log_fam"]) ? $_SESSION["log_fam"] : '';
 $level_us = isset($_SESSION["level_user"]) ? $_SESSION["level_user"] : '';
 $level3   = isset($_SESSION["login_user"]) ? $_SESSION["login_user"] : '';
 $page     = isset($data['page']) ? $data['page'] : '';
@@ -28,13 +29,14 @@ $pages    = isset($data['pages']) ? $data['pages'] : '';
             </div>
 
             <div class="sidebar-menu">
-                <ul class="menu">
+                 <ul class="menu">
+                 <ul class="menu">
                     <li class="sidebar-title">Master</li>
 
                     <li class="sidebar-item <?= $pages == 'home' ? 'active' : '' ?>">
                         <a href="<?= base_url ?>/home" class="sidebar-link">
                             <i class="bi bi-box-seam"></i>
-                            <span>Dashboard</span>
+                            <span>Packing List</span>
                         </a>
                     </li>
 
@@ -67,7 +69,7 @@ $pages    = isset($data['pages']) ? $data['pages'] : '';
                         </a>
                     </li>
 
-            
+                    <?//phpif ($log_fin): // Check if data is final ?>
                     <li class="sidebar-title">Menu Final</li>
                     <li class="sidebar-item <?= $pages == 'inputkrusfinal' ? 'active' : '' ?>">
                         <a href="<?= base_url ?>/transaksifinalkurs" class="sidebar-link">
@@ -96,20 +98,29 @@ $pages    = isset($data['pages']) ? $data['pages'] : '';
                             <span>Laporan Final</span>
                         </a>
                     </li>
-           
+                    <?//php endif; ?>
 
+                    <!-- Contoh menu tambahan jika dibutuhkan di masa depan -->
+                    <!-- 
+                    <?php if($level3 == "wardi" || $level3 == "herman"): ?>
+                        <li class="sidebar-item <?= $pages == 'hasilpib' ? 'active' : '' ?>">
+                            <a href="<?= base_url ?>/laporan/hasilpib" class="sidebar-link">
+                                <i class="bi bi-graph-up"></i>
+                                <span>Laporan Hasil PIB</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    -->
                 </ul>
 
-             <ul class="menu">
-                <li class="sidebar-title mt-4">User</li>
-                <li class="sidebar-item">
-                    <a href="<?= base_url ?>/logout" class="sidebar-link text-danger">
-                        <i class="bi bi-box-arrow-right"></i>
-                        <span>Sign Out</span>
-                    </a>
-                </li>
-            </ul>
-
+                <ul class="menu">
+                    <li class="sidebar-item">
+                        <a href="<?= base_url ?>/logout" class="sidebar-link">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
 
             </div>
         </div>
@@ -150,27 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (activeItem || cardElement) {
         sidebarWrapper.classList.add("hide-scrollbar");
     }
-
-    const logoutLink = document.querySelector('a[href*="/logout"]');
-   if (logoutLink) {
-        logoutLink.addEventListener("click", function (e) {
-            e.preventDefault(); // selalu prevent dulu
-
-            Swal.fire({
-                title: 'Yakin ingin logout?',
-                text: "Anda akan keluar dari aplikasi. Packing List ..",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, logout!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = logoutLink.href; // redirect manual
-                }
-            });
-        });
-    }
 });
 </script>
+
