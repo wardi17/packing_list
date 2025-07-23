@@ -70,12 +70,12 @@ BEGIN
         a.DOTransacID,
         a.Partid,
         a.PartName,
-        a.UnitPrice AS Qty,
+        a.quantity AS Qty,
         a.satuan AS Unit,
         a.itemprice AS Price,
-        a.UnitPrice * a.itemprice AS Amount_USD,
+        a.quantity * a.itemprice AS Amount_USD,
         a.kurs AS Kurs,
-        a.UnitPrice * a.itemprice * a.kurs AS Amount_Rp
+        a.quantity * a.itemprice * a.kurs AS Amount_Rp
     FROM 
         [bambi-bmi].[dbo].[POTRANSACTIONDETAIL] AS a
     WHERE 

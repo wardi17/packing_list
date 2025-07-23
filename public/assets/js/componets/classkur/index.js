@@ -69,7 +69,8 @@ function handleSubmitData(e) {
 
 function handleTambahForwader(e) {
     e.preventDefault();
-    const forward = $("#totalAmountrumus").text().trim();
+    let forward = $("#totalAmountrumus").length ? $("#totalAmountrumus").text().trim() : "";
+    forward = forward === "" ? "0" : forward;
     $("#forwarder").val(forward);
     $("#modaltransforwader").modal("hide");
 
