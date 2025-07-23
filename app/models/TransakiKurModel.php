@@ -112,6 +112,17 @@ class TransakiKurModel extends Models
         $no = 1;
 
         foreach ($detailkurdata as $item) {
+
+            $partid = $this->test_input($item["partid"]);
+            $itemNoQuery = "SELECT ItemNo FROM POTRANSACTIONDETAIL WHERE Partid = '{$partid}' LIMIT 1";
+            $itemNoResult = $this->db->baca_sql($itemNoQuery);
+            // Ambil ItemNo dari hasil query
+            $itemNo = !empty($itemNoResult) ? $itemNoResult[0]['ItemNo'] : null;
+            // Jika ItemNo tidak ditemukan, set $success ke false dan lanjutkan ke item berikutnya
+            if ($itemNo === null) {
+                $success = false;
+                continue; // Skip ke item berikutnya
+            }
             $query = "
                 INSERT INTO {$this->table_dtl} (
                     No_Pls, ItemNo, Partid, PartName, satuan, Qty, Price,
