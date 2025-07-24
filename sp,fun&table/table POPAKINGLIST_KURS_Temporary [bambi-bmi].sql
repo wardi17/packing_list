@@ -32,6 +32,9 @@ CREATE TABLE [dbo].[POPAKINGLIST_KURS_Temporary](
 	PRIMARY KEY(No_Pls)
 )
 
+ALTER TABLE [dbo].[POPAKINGLIST_KURS_Temporary]
+ADD [Note2] [text] NULL;
+
 
 GO
 

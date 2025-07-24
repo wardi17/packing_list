@@ -32,7 +32,8 @@ AS
 		Total float,
 		UserPosting CHAR(10),
 		DatePosting DATETIME,
-		id_bl_awb char(50)
+		id_bl_awb char(50),
+		Note2 VARCHAR(8000),
 
 	);
 BEGIN
@@ -41,18 +42,18 @@ BEGIN
 		BEGIN
 			INSERT INTO #temptess
 			SELECT No_Pls,No_Pli,NoPo,POTransacid,EntryDate,Note,supid,LastUserIDAccess,[bambi-bmi].[dbo].FunSumDetailPakingList_KURS(No_Pls) as Totaldetail,
-			Pib,Forwarder,Total,UserPosting,DatePosting,id_bl_awb
+			Pib,Forwarder,Total,UserPosting,DatePosting,id_bl_awb,Note2
 			FROM  [bambi-bmi].[dbo].POPAKINGLIST_KURS  WHERE YEAR(EntryDate) =@tahun AND FlagPosting='N'   ORDER BY EntryDate DESC  ;
 		END
 	 ELSE
 		BEGIN
 			INSERT INTO #temptess
 			SELECT No_Pls,No_Pli,NoPo,POTransacid,EntryDate,Note,supid,LastUserIDAccess,[bambi-bmi].[dbo].FunSumDetailPakingList_KURS(No_Pls) as Totaldetail,
-			Pib,Forwarder,Total,UserPosting,DatePosting,id_bl_awb
+			Pib,Forwarder,Total,UserPosting,DatePosting,id_bl_awb,Note2
 			FROM  [bambi-bmi].[dbo].POPAKINGLIST_KURS  WHERE YEAR(EntryDate) =@tahun AND LastUserIDAccess=@userid AND FlagPosting='N'  ORDER BY EntryDate DESC  ;
 		END
 
-	SELECT 	No_Pls,No_Pli,NoPo,POTransacid,EntryDate,Note,supid,userid,Totaldetail,Pib,Forwarder,Total,UserPosting,DatePosting,id_bl_awb FROM #temptess ORDER BY No_Pls ASC
+	SELECT 	No_Pls,No_Pli,NoPo,POTransacid,EntryDate,Note,supid,userid,Totaldetail,Pib,Forwarder,Total,UserPosting,DatePosting,id_bl_awb,Note2 FROM #temptess ORDER BY No_Pls ASC
 END
 
 

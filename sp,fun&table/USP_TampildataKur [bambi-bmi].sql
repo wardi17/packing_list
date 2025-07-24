@@ -92,6 +92,7 @@ BEGIN
         @total_amount_akhir FLOAT,
         @prosentase FLOAT;
 
+	 
     SELECT 
         @total_amount_USD = ISNULL(SUM(Amount_USD), 0),
         @total_amount_rp = ISNULL(SUM(Amount_Rp), 0),
@@ -99,7 +100,8 @@ BEGIN
     FROM 
         #temptess
     WHERE 
-        DOTransacID = @nopo;
+        DOTransacID = @nopo  AND Partid<>'01.001.163' ;
+
 
     IF @total_amount_USD = 0
         SET @kurs_akhir = 0;
@@ -138,7 +140,7 @@ BEGIN
     FROM 
         #temptess2
     WHERE 
-        DOTransacID = @nopo;
+        DOTransacID = @nopo AND Partid<>'01.001.163';
 
     IF @total_amount_rp <> 0
         SET @prosentase = (((@total_amount_akhir - @total_amount_rp)/@total_amount_rp) * 100);
@@ -160,4 +162,5 @@ END
 GO
 
 -- Eksekusi contoh
- EXEC USP_TampildataKur 'PO210302072753', 16788319
+ EXEC USP_TampildataKur 'PO250722093329', 27838000
+

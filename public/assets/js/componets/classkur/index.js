@@ -74,8 +74,8 @@ function handleTambahForwader(e) {
     $("#forwarder").val(forward);
     $("#modaltransforwader").modal("hide");
 
-    const pib = $("#pib").val();
-    settotal(pib, forward);
+   // const pib = $("#pib").val();
+   // settotal(pib, forward);
     tampilkanTombolProses("#SubmitProsesdata", "Proses");
 }
 
@@ -175,12 +175,13 @@ function initializeEditMode() {
 
 function handleTambahForwaderEdit(e) {
     e.preventDefault();
-    const forward = $("#totalAmountrumus").text().trim();
+    let forward = $("#totalAmountrumus").text().trim();
+     forward = forward === "" ? "0" : forward;
     $("#forwarder").val(forward);
     $("#modaltransforwaderedit").modal("hide");
 
-    const pib = $("#pib").val();
-    settotal(pib, forward);
+    // const pib = $("#pib").val();
+    // settotal(pib, forward);
     tampilkanTombolProses("#SubmitProsesdataEdit", "Proses edit");
 }
 
@@ -246,6 +247,8 @@ function bindCommonEvents() {
         e.preventDefault();
         goBackDetail();
     });
+
+
 }
 
 function calculateTotalfor(data) {

@@ -157,10 +157,10 @@ appendCustomStyles() {
             <td class="text-end" >${item.Kurs}</td>
             <td class="text-end " id="${item.Hpp_Awal}">${parseFloat(item.Hpp_Awal).toFixed(2)}</td>
             <td class="text-end">${item.Amount_Rp}</td>
-            <td class="text-end" id="${item.kur_akhir}">${item.kur_akhirtampil}</td>
-            <td class="text-end" id="${item.Amount_RpAkhir}">${item.Amount_RpAkhirTampil}</td>
-            <td class="text-end" id="${item.Hpp_Akhir}">${item.Hpp_AkhirTampil}</td>
-            <td class="text-end" id="${item.Selisih_Hpp}">${item.Selisih_HppTampil}</td>
+             <td class="text-end" id="${item.Partid ==="01.001.163" ? 0 :item.kur_akhir}">${item.Partid ==="01.001.163" ?"" : item.kur_akhirtampil}</td>
+            <td class="text-end" id="${item.Partid ==="01.001.163" ? 0 :item.Amount_RpAkhir}">${item.Partid ==="01.001.163" ?"" : item.Amount_RpAkhirTampil}</td>
+            <td class="text-end" id="${item.Partid ==="01.001.163" ? 0 :item.Hpp_Akhir}">${item.Partid ==="01.001.163" ?"" : item.Hpp_AkhirTampil}</td>
+            <td class="text-end" id="${item.Partid ==="01.001.163" ? 0 :item.Selisih_Hpp}">${item.Partid ==="01.001.163" ?"" : item.Selisih_HppTampil}</td>
         </tr>
     `).join('');
   }

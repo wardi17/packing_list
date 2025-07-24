@@ -8,7 +8,7 @@ class KurDataService {
     }
 
     getFormData() {
-       const pib           = $("#pib").val();
+       const pib            = 0;
         const forwarder     = $("#forwarder").val();
         const transnoHider  = $("#transnoHider").val();
         const suplieid      = $("#suplair").find(":selected").val();
@@ -18,11 +18,12 @@ class KurDataService {
         const ket           = $("#keterangan").val();
         const idpackinglist = $("#idpackinglist").val();
         const id_bl_awb     = $("#id_bl_awb").val();
-        const total         = $("#total").text();
+        const total         =0;
         const total_usd     = $("#total_usd").text();
         const total_rp      = $("#total_rp").text();
         const total_amountakhir = $("#total_amountakhir").text();
         const total_Prosentase        =$("#total_Prosentase").text();
+        const note = $("#note").val();
 
         let dataheader ={
           "transo"        :transnoHider,
@@ -32,19 +33,19 @@ class KurDataService {
           "tanggal"       :tanggal,
           "keterangan"    :ket,
           "idpackinglist" :idpackinglist,
-          "pib"           :pib.replace(/\,/g,""),
+          "pib"           :pib,
           "forwarder"     :forwarder.replace(/\,/g,""),
           "id_bl_awb"     :id_bl_awb,
-          "total"         :total.replace(/\,/g,"").trim(),
+          "total"         :total,
           "total_usd"     :total_usd.replace(/\,/g,"").trim(),
           "total_rp"      :total_rp.replace(/\,/g,"").trim(),
           "total_amountakhir" :total_amountakhir.replace(/\,/g,"").trim(),
           "total_Prosentase"  :total_Prosentase.replace(/\,/g,"").trim(),
-    
+          "note"          :note,
+
           
         };
 
-       
         return dataheader;
     }
 
@@ -158,7 +159,7 @@ class KurDataService {
         const dataheader = this.getFormData();
         const detailforwader = this.ambilDataTabelForwader("#table_Detailforwader > tbody > tr");
         const detailkurdata = this.ambilDataTabelKurdata("#table_kurdata > tbody > tr");
-         //console.log(detailkurdata);
+        // console.log(detailkurdata);
         // return;
         const fullData = {
             dataheader: dataheader,

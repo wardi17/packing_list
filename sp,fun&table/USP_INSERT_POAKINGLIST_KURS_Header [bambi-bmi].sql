@@ -23,7 +23,8 @@ ALTER PROCEDURE [dbo].[USP_INSERT_POAKINGLIST_KURS_Header]
     @total_usd FLOAT,
     @total_rp FLOAT,
     @total_amountakhir FLOAT,
-    @total_Prosentase FLOAT
+    @total_Prosentase FLOAT,
+    @Note2 TEXT
 
 AS
 BEGIN
@@ -39,13 +40,14 @@ BEGIN
             No_Pls, No_Pli, POTransacid, EntryDate, Note,
             LastUserIDAccess, LastDateAccess, supid, NoPo, 
             Pib, Forwarder, Total, id_bl_awb,
-            total_usd,total_rp,total_amountakhir,total_Prosentase
+            total_usd,total_rp,total_amountakhir,total_Prosentase,
+            Note2
         )
         VALUES (
             @No_Pls, @No_Pli, @POTransacid, @EntryDate, @Note,
             @LastUserIDAccess, GETDATE(), @suplieid, @NoPo,
             @Pib, @Forwarder, @Total, @id_bl_awb,
-            @total_usd,@total_rp,@total_amountakhir,@total_Prosentase
+            @total_usd,@total_rp,@total_amountakhir,@total_Prosentase,@Note2
         )
 
 

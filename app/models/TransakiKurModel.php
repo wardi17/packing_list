@@ -112,17 +112,6 @@ class TransakiKurModel extends Models
         $no = 1;
 
         foreach ($detailkurdata as $item) {
-
-            $partid = $this->test_input($item["partid"]);
-            $itemNoQuery = "SELECT ItemNo FROM POTRANSACTIONDETAIL WHERE Partid = '{$partid}' LIMIT 1";
-            $itemNoResult = $this->db->baca_sql($itemNoQuery);
-            // Ambil ItemNo dari hasil query
-            $itemNo = !empty($itemNoResult) ? $itemNoResult[0]['ItemNo'] : null;
-            // Jika ItemNo tidak ditemukan, set $success ke false dan lanjutkan ke item berikutnya
-            if ($itemNo === null) {
-                $success = false;
-                continue; // Skip ke item berikutnya
-            }
             $query = "
                 INSERT INTO {$this->table_dtl} (
                     No_Pls, ItemNo, Partid, PartName, satuan, Qty, Price,
@@ -154,7 +143,7 @@ class TransakiKurModel extends Models
 
             $no++;
         }
-
+        $this->UpdateItemNo_KursDetail($transo);
         return [
             'nilai' => $success ? 1 : 0,
             'error' => $success ? 'Berhasil Simpan Data' : 'Gagal Simpan Data'
@@ -209,6 +198,7 @@ class TransakiKurModel extends Models
     private function simpadataHider($header)
     {
 
+
         $dateTime = DateTime::createFromFormat('d/m/Y', $this->test_input($header["tanggal"]));
         $formattedDate = $dateTime ? $dateTime->format('Y-m-d H:i:s') : '';
 
@@ -229,13 +219,32 @@ class TransakiKurModel extends Models
             '{$this->test_input($header["total_usd"])}',
             '{$this->test_input($header["total_rp"])}',
             '{$this->test_input($header["total_amountakhir"])}',
-            '{$this->test_input($header["total_Prosentase"])}'
+            '{$this->test_input($header["total_Prosentase"])}',
+            '{$this->test_input($header["note"])}'
         ";
 
         //$this->consol_war($query);
         return $this->db->baca_sql2($query) ? 1 : 0;
     }
 
+
+    private function UpdateItemNo_KursDetail($transo)
+    {
+        $query = "sp_UpdateItemNo_KursDetail'{$transo}'";
+        $result = $this->db->baca_sql2($query);
+        $cek = $result ? 0 : 1;
+
+        // Respon status
+        if ($cek === 0) {
+            $status['nilai'] = 1;
+            $status['error'] = "Data Berhasil Update ItemNo";
+        } else {
+            $status['nilai'] = 0;
+            $status['error'] = "Data Gagal Update ItemNo";
+        }
+
+        return $status;
+    }
 
     public function ListData($post)
     {
@@ -262,7 +271,8 @@ class TransakiKurModel extends Models
                 "Pib"         => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Pib')),
                 "Forwarder"   => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Forwarder')),
                 "Total"       => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Total')),
-                "Status"      => $status
+                "Status"      => $status,
+                "Note2"      => $this->getOdbcValue($result, 'Note2'),
             ];
         }
 
@@ -481,7 +491,7 @@ class TransakiKurModel extends Models
 
             $no++;
         }
-
+        $this->UpdateItemNo_KursDetail($transo);
         return [
             'nilai' => $success ? 1 : 0,
             'error' => $success ? 'Berhasil Update Data' : 'Gagal Update Data'
@@ -687,6 +697,7 @@ class TransakiKurModel extends Models
                 "Total"      => number_format(rtrim(odbc_result($result, 'Total')), 2, '.', ','),
                 "UserPosting"     => rtrim(odbc_result($result, 'UserPosting')),
                 "DatePosting"     => rtrim(odbc_result($result, 'DatePosting')),
+                "Note2"     => rtrim(odbc_result($result, 'Note2')),
             ];
         }
 
