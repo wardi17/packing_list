@@ -10,27 +10,55 @@ export default class ProsesdataKurEdit {
     }
   }
 
-     appendCustomStyles() {
-        const style = document.createElement("style");
-        style.textContent = `
-              table td, table th {
-                font-size: 12px;
-            }
-        
-               th, td {
-                text-align: center;
-                vertical-align: middle;
-                }
-
-         #thead{
-            background-color:#E7CEA6 !important;
-            /* font-size: 8px;
-            font-weight: 100 !important; */
-            /*color :#000000 !important;*/
+   appendCustomStyles() {
+    const style = document.createElement("style");
+    style.textContent = `
+        /* Ukuran font untuk isi tabel */
+        table td, table th {
+            font-size: 12px;
         }
-        `;
-        document.head.appendChild(style);
-    }
+
+        /* Posisi teks */
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap; /* agar kolom tidak patah ke bawah */
+        }
+
+        /* Header warna */
+        #thead {
+            background-color: #E7CEA6 !important;
+        }
+
+        /* Container scroll horizontal */
+        #scrollable-table {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            padding-bottom: 5px;
+        }
+
+        /* Saat drag aktif */
+        #scrollable-table:active {
+            cursor: grabbing;
+        }
+
+        /* Tambahan untuk membuat table 100% width */
+        #scrollable-table table {
+            width: 100%; /* Set to 100% to fill the container */
+            min-width: 600px; /* Minimum width to prevent collapsing */
+            border-collapse: collapse;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            table td, table th {
+                font-size: 10px; /* Smaller font size on smaller screens */
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
 
   renderDataNonProses() {
     const transnoHider = $("#transnoHider").val();
@@ -129,9 +157,9 @@ export default class ProsesdataKurEdit {
     const divid = $("#itemTabel");
     divid.empty();
 
-     let table = `
-        <div style="overflow-x:auto;">
-            <table class="table table-striped table-hover table-bordered" id="table_kurdata">
+   let table = `
+    <div id="scrollable-table">
+        <table class="table table-striped table-hover table-bordered" id="table_kurdata">
             <thead id="thead">
                 <tr>
                     <th rowspan="2">No</th>
@@ -147,7 +175,6 @@ export default class ProsesdataKurEdit {
                     <th rowspan="2" class="text-end">+/-</th>
                 </tr>
                 <tr>
-                   
                     <th class="text-center">Price Unit</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Price Unit</th>
@@ -155,24 +182,23 @@ export default class ProsesdataKurEdit {
                     <th class="text-end">Amount</th>
                     <th class="text-end">HPP Unit</th>
                 </tr>
-                </thead>
+            </thead>
+            <tbody>
+                ${this.generateTableRows(result)}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                    ${this.generateTotalRow(result)}
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">PROSENTASE KENAIKAN HARGA LANDED :</td>
+                    ${this.generateTotalProsentase(result)}
+                </tr>
+            </tfoot>
+        </table>
+    </div>`;
 
-                <tbody>
-                    ${this.generateTableRows(result)}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end fw-bold">Total:</td>
-                        ${this.generateTotalRow(result)}
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="text-end fw-bold" class"text-end fw-bold">PROSENTASE KENAIKAN HARGA LANDED :</td>
-                        ${this.generateTotalProsentase(result)}
-                       
-                    </tr>
-                </tfoot>
-            </table>
-        </div>`;
 
     divid.html(table);
   }

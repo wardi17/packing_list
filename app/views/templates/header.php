@@ -1,8 +1,9 @@
 <html>
+
 <head id="headerNo">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Packing List</title>
+    <title>Biaya Import</title>
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="<?= base_url; ?>/assets/fontawesome/css/all.min.css"> <!-- Font Awesome -->
@@ -10,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="<?= base_url; ?>/assets/css/main/app.css">
     <link rel="stylesheet" href="<?= base_url; ?>/assets/css/grafik.css">
-    <link href="<?= base_url; ?>/assets/css/datatables.min.css" rel="stylesheet"/>
+    <link href="<?= base_url; ?>/assets/css/datatables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= base_url; ?>/assets/css/jquery-ui.css">
     <link rel="stylesheet" href="<?= base_url; ?>/assets/css/pages/summernote.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
@@ -48,13 +49,14 @@
             font-family: Helvetica !important;
             line-height: 1.0 !important;
         }
+
         .right-aligned-input {
             text-align: right;
         }
+
         #attach {
             opacity: 0;
         }
-        
     </style>
 
     <script>
@@ -62,5 +64,3 @@
     </script>
 
 </head>
-
-

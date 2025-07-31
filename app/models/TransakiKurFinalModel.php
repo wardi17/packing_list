@@ -35,6 +35,8 @@ class TransakiKurFinalModel extends Models
     private $total_Prosentase;
     private $currid;
     private $kurslanded;
+    private $total_usd_only;
+    private $total_idr_only;
 
     public function ListData($post)
     {
@@ -67,7 +69,8 @@ class TransakiKurFinalModel extends Models
                 "Pib"         => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Pib')),
                 "Forwarder"   => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Forwarder')),
                 "Total"       => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Total')),
-                "Status"      => $status
+                "Status"      => $status,
+                "Note2"     => $this->getOdbcValue($result, 'Note2'),
             ];
         }
 
@@ -142,7 +145,8 @@ class TransakiKurFinalModel extends Models
             '{$this->test_input($header["total_usd"])}',
             '{$this->test_input($header["total_rp"])}',
             '{$this->test_input($header["total_amountakhir"])}',
-            '{$this->test_input($header["total_Prosentase"])}'
+            '{$this->test_input($header["total_Prosentase"])}',
+            '{$this->test_input($header["note"])}'
         ";
 
         //$this->consol_war($query);
@@ -244,13 +248,32 @@ class TransakiKurFinalModel extends Models
 
             $no++;
         }
-
+        $this->UpdateItemNo_KursDetail($transo);
         return [
             'nilai' => $success ? 1 : 0,
             'error' => $success ? 'Berhasil Simpan Data' : 'Gagal Simpan Data'
         ];
     }
 
+
+
+    private function UpdateItemNo_KursDetail($transo)
+    {
+        $query = "sp_UpdateItemNo_KursDetailTemp'{$transo}'";
+        $result = $this->db->baca_sql2($query);
+        $cek = $result ? 0 : 1;
+
+        // Respon status
+        if ($cek === 0) {
+            $status['nilai'] = 1;
+            $status['error'] = "Data Berhasil Update ItemNo";
+        } else {
+            $status['nilai'] = 0;
+            $status['error'] = "Data Gagal Update ItemNo";
+        }
+
+        return $status;
+    }
 
     public function Listdatafinal($post)
     {
@@ -283,7 +306,8 @@ class TransakiKurFinalModel extends Models
                 "Pib"         => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Pib')),
                 "Forwarder"   => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Forwarder')),
                 "Total"       => $this->formatNumberOrEmpty($this->getOdbcValue($result, 'Total')),
-                "Status"      => $status
+                "Status"      => $status,
+                "Note2"     => $this->getOdbcValue($result, 'Note2'),
             ];
         }
 
@@ -572,7 +596,9 @@ class TransakiKurFinalModel extends Models
             $this->total_KursAkhir  = number_format(rtrim(odbc_result($result, 'total_KursAkhir')), 0, '.', '.');
             $this->total_RpAkhir    = number_format(rtrim(odbc_result($result, 'total_RpAkhir')), 0, ',', ',');
             $this->total_Prosentase = number_format(rtrim(odbc_result($result, 'total_Prosentase')), 2, '.', '.');
-            $this->kurslanded       = number_format(rtrim(odbc_result($result, 'Kurs_Akhir')), 0, '.', '.');
+            $this->kurslanded       = number_format(rtrim(odbc_result($result, 'kurslanded')), 0, '.', '.');
+            $this->total_usd_only   = number_format(rtrim(odbc_result($result, 'total_usd_only')), 0, '.', ',');
+            $this->total_idr_only    = number_format(rtrim(odbc_result($result, 'total_idr_only')), 0, '.', ',');
             $this->currid           = rtrim(odbc_result($result, 'currid'));
             $Hpp_Akhir = round(rtrim(odbc_result($result, 'Hpp_Akhir')), 0);
             $Hpp_Awal = round(rtrim(odbc_result($result, 'Hpp_Awal')), 0);
@@ -621,7 +647,9 @@ class TransakiKurFinalModel extends Models
             "total_RpAkhir"     => $this->total_RpAkhir,
             "total_Prosentase"  => $this->total_Prosentase,
             "currid"            => $this->currid,
-            "kurslanded"        => $this->kurslanded
+            "kurslanded"        => $this->kurslanded,
+            "total_usd_only"    => $this->total_usd_only,
+            "total_idr_only"     => $this->total_idr_only,
         ];
 
         $fulldata = [

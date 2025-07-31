@@ -31,11 +31,12 @@ class FPDF_AutoWrapTable extends FPDF
         $this->SetAutoPageBreak(true, 60);
         $this->AliasNbPages();
 
+        // die(var_dump($header));
         // Extract header information
         $ID_Hider     = $header['ID_Hider'];
         $No_Pli       = $header['No_Pli'];
         $NoPO         = $header['NoPO'];
-        $EntryDate    = date('d-m-y', strtotime($header['EntryDate']));
+        $EntryDate    = date('d M y', strtotime($header['EntryDate']));
         $Note         = $header['Note'];
         $supid        = $header['supid'];
         $Pib          = $header['Pib'];
@@ -57,6 +58,8 @@ class FPDF_AutoWrapTable extends FPDF
         $total_Prosentase = $header["total_Prosentase"];
         $currid           = $header["currid"];
         $kurslanded       = $header["kurslanded"];
+        $total_usd_only   = $header["total_usd_only"];
+        $total_idr_only    = $header["total_idr_only"];
 
         $this->ln(0);
         // Set font for the document
@@ -161,6 +164,7 @@ class FPDF_AutoWrapTable extends FPDF
             ));
         }
 
+
         // Total row
         $this->SetFont('Arial', 'B', 7);
         $this->SetX(10);
@@ -176,49 +180,77 @@ class FPDF_AutoWrapTable extends FPDF
         $this->Cell(18, 5, $total_RpAkhir, 1, 0, 'R');
         $this->Cell(18, 5, '', 1, 0, 'R'); // hpp landed
         $this->Cell(15, 5, '', 1, 1, 'R'); // +/-
+
+
         // Note section - MENEMPEL ke TOTAL
         $currentY = $this->GetY(); // AMBIL POSISI SETELAH TOTAL
-        $this->SetXY(10, $currentY); // MULAI DARI X=10 & Y=sekarang
+
+        $this->SetXY(10, $currentY);
+        $this->SetFont('Arial', 'B', 7);
+        $this->MultiCell($width + 20, 5, 'Total item Product Only', 0, 'L', FALSE);
+        $this->SetXY($width + 30, $currentY);
+        $this->MultiCell(3, 5, ':', 0, 'L', FALSE);
+        $this->SetXY($width + 33, $currentY);
+        $this->MultiCell(15, 5, 'PO (USD)', 0, 'L', false);
+        $this->SetXY($width + 48, $currentY);
+        $this->MultiCell(3, 5, ':', 0, 'L', FALSE);
+        $this->SetXY(58, $currentY);
+        $this->MultiCell(25, 5, $total_usd_only, 0, 'R', false);
+
+        $y1 = $this->GetY();
+        $this->SetFont('Arial', 'B', 7);
+        $this->MultiCell($width + 23, 5, '', 0, 'L', FALSE);
+
+        $this->SetXY($width + 33, $y1);
+        $this->MultiCell(15, 5, 'PO (IDR)', 0, 'L', false);
+        $this->SetXY($width + 48, $y1);
+        $this->MultiCell(3, 5, ':', 0, 'L', FALSE);
+        $this->SetXY(58, $y1);
+        $this->MultiCell(25, 5, $total_idr_only, 0, 'R', false);
+
+        $y7 = $this->GetY();
+        $this->SetXY(10, $y7); // MULAI DARI X=10 & Y=sekarang
         $this->SetFont('Arial', 'B', 7);
         $this->MultiCell($width + 5, 5, 'Catatan ', 0, 'L', FALSE);
-        $this->SetXY(25, $currentY);
+        $this->SetXY(25, $y7);
         $this->MultiCell(3, 5, ':', 0, 'L', FALSE);
-        $this->SetXY(28, $currentY);
+        $this->SetXY(28, $y7);
         $this->MultiCell(85, 5, $Note, 0, 'L', false);
 
-
-
-
-
-        // Cetak PIB
-        // $this->SetXY(171, $currentY);
-        // $this->Cell(55, 5, 'PIB', 0, 0, 'L');
-        // $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
-        // $this->Cell(22, 5, $Pib, 0, 1, 'R');
+        //  Cetak PIB
+        $x = 155;
+        $this->SetXY($x, $currentY);
+        $this->Cell(55, 5, 'PIB', 0, 0, 'L');
+        $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
+        $this->Cell(22, 5, $Pib, 0, 0, 'R');
+        $this->Cell(5, 5, " - > ", 0, 0, 'L');
+        $this->Cell(22, 5, " Tidak Masuk HPP", 0, 1, 'L');
 
         //Cetak forwader
-        $x = 171;
+
         $y2 = $this->GetY();
         $this->SetXY($x, $y2);
         $this->Cell(55, 5, 'FORWARDER', 0, 0, 'L');
         $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
-        $this->Cell(22, 5, $Forwarder, 0, 1, 'R');
+        $this->Cell(22, 5, $Forwarder, 0, 0, 'R');
+        $this->Cell(5, 5, " - > ", 0, 0, 'L');
+        $this->Cell(22, 5, " Masuk HPP", 0, 1, 'L');
 
         //cetak penjumlahan
-        $y3 = $this->GetY();
-        $this->SetXY($x, $y3);
-        $this->Cell(20, 1, str_repeat("_", 62), 0, 1, 'L');
+        // $y3 = $this->GetY();
+        // $this->SetXY($x, $y3);
+        // $this->Cell(20, 1, str_repeat("_", 62), 0, 1, 'L');
 
-        $x4 = 259;
-        $y4 = $this->GetY();
-        $this->SetXY($x4, $y4);
-        $this->Cell(5, 1, '+', 0, 1, 'L');
+        // $x4 = 259;
+        // $y4 = $this->GetY();
+        // $this->SetXY($x4, $y4);
+        // $this->Cell(5, 1, '+', 0, 1, 'L');
 
-        $y5 = $this->GetY();
-        $this->SetXY($x, $y5);
-        $this->Cell(55, 5, 'TOTAL', 0, 0, 'L');
-        $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
-        $this->Cell(22, 5, $Forwarder, 0, 1, 'R');
+        // $y5 = $this->GetY();
+        // $this->SetXY($x, $y5);
+        // $this->Cell(55, 5, 'TOTAL', 0, 0, 'L');
+        // $this->Cell(7, 5, ': Rp.', 0, 0, 'C');
+        // $this->Cell(22, 5, $Forwarder, 0, 1, 'R');
 
 
         //cetak prosentase
@@ -227,6 +259,7 @@ class FPDF_AutoWrapTable extends FPDF
         $this->Cell(55, 5, 'PROSENTASE KENAIKAN HARGA LANDED', 0, 0, 'L');
         $this->Cell(2, 5, ':', 0, 0, 'C');
         $this->Cell(40, 5, $total_Prosentase . " %" . " ( 1 " . $currid . " =  Rp. " . $kurslanded . " )", 0, 1, 'L');
+
 
 
         $this->SetY(-100);

@@ -3,7 +3,6 @@
 import TransakiForwoderFinal from './tampiltransforwaderfinal.js';
 import ProsesdataKurFinalAdd from'./ProsesdataKurFinalAdd.js';
 
-import ProsesdataKur from './Prosesgetkur.js';
 import { SimpandataKurFinal } from './simpandataFinal.js';
 import { baseUrl } from '../config.js';
 import TransakiForwoderFinal_Edit from './tampiltransforwaderfinaledit.js';
@@ -20,11 +19,7 @@ $(document).ready(function () {
     const pageMode = getPageMode();
 
   
-    // $("#testtable").on("click",function(e){
-    //     e.preventDefault();
-    //     new ProsesdataKur();
-    // })
-
+  
 
     bindCommonEvents();
     // Pakai kondisi berdasarkan nilai mode
@@ -74,12 +69,13 @@ function handleSubmitDataFinal(e) {
 
 function handleTambahForwader(e) {
     e.preventDefault();
-    const forward = $("#totalAmountrumus").text().trim();
+    let forward = $("#totalAmountrumus").text().trim();
+     forward = forward === "" ? "0" : forward;
     $("#forwarder").val(forward);
     $("#modaltransforwader").modal("hide");
 
-    const pib = $("#pib").val();
-    settotal(pib, forward);
+    // const pib = $("#pib").val();
+    // settotal(pib, forward);
     tampilkanTombolProses("#SubmitProsesdata", "Proses");
 }
 
@@ -91,7 +87,7 @@ function handleSubmitProsesData(e) {
         $("#nopoError").text("No PO harus dipilih dulu");
     } else {
         $("#nopoError").text("");
-        new ProsesdataKur();
+        new ProsesdataKurFinalAdd();
     }
 }
 
@@ -180,12 +176,13 @@ function initializeEditMode() {
 
 function handleTambahForwaderEdit(e) {
     e.preventDefault();
-    const forward = $("#totalAmountrumus").text().trim();
+    let forward = $("#totalAmountrumus").text().trim();
+    forward = forward === "" ? "0" : forward;
     $("#forwarder").val(forward);
     $("#modaltransforwaderedit").modal("hide");
 
-    const pib = $("#pib").val();
-    settotal(pib, forward);
+    // const pib = $("#pib").val();
+    // settotal(pib, forward);
     tampilkanTombolProses("#SubmitProsesdataEdit", "Proses edit");
 }
 

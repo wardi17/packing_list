@@ -1,140 +1,141 @@
 <?php
 
-$userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
+$userlog = (isset($_SESSION['login_user'])) ?  $_SESSION['login_user'] : '';
 ?>
 
 <style>
-    #thead{
-        background-color:#E7CEA6 !important;
-        /* font-size: 8px;
+  #thead {
+    background-color: #E7CEA6 !important;
+    /* font-size: 8px;
         font-weight: 100 !important; */
-        /*color :#000000 !important;*/
-      }
-      .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-		  background-color: #F3FEB8;
-		}
+    /*color :#000000 !important;*/
+  }
 
-    /* .table-striped{
+  .table-hover tbody tr:hover td,
+  .table-hover tbody tr:hover th {
+    background-color: #F3FEB8;
+  }
+
+  /* .table-striped{
       background-color:#E9F391FF !important;
     } */
-    .dataTables_filter{
-		 padding-bottom: 20px !important;
-	}
-
-  #frompacking{
-        width:100%;
-        height: 2% !important;
-      margin: 0 auto;
+  .dataTables_filter {
+    padding-bottom: 20px !important;
   }
 
+  #frompacking {
+    width: 100%;
+    height: 2% !important;
+    margin: 0 auto;
+  }
 </style>
 <div id="main">
-       <header class="mb-3">
-       <input type="hidden" id="usernama" class="form-control" value="<?=$userlog?>">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
-    <!-- Content Header (Page header) -->
-    <div class ="col-md-12 col-12">
-            <!-- Default box -->
-            <div class="card">
-              <div class="card-header">
-              <h5 class="text-center">List Final </h5>
-              </div>
-              <div class="card-body">
-              <div class ="row col-md-12 col-12">
-                <!-- <h3 class="text-center">Target upload</h3> -->
-                  
-                    <div  class="col-md-8">
-                        <form id="form_filter">
-                                    <div class=" row col-md-8">
-                                      <div style="width:25%;" class="col-md-2">
-                                          <select class ="form-control" id="filter_tahun"></select>
-                                        </div>
-                         
-                                    </div>
-                                </form>
-                
-                    </div> 
-                 
-         
-            </div>
-                <div id="tabellistfinal" class="table-responsive"></div>
-              </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
+  <header class="mb-3">
+    <input type="hidden" id="usernama" class="form-control" value="<?= $userlog ?>">
+    <a href="#" class="burger-btn d-block d-xl-none">
+      <i class="bi bi-justify fs-3"></i>
+    </a>
+  </header>
+  <!-- Content Header (Page header) -->
+  <div class="col-md-12 col-12">
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="text-center">List Final </h5>
       </div>
+      <div class="card-body">
+        <div class="row col-md-12 col-12">
+          <!-- <h3 class="text-center">Target upload</h3> -->
+
+          <div class="col-md-8">
+            <form id="form_filter">
+              <div class=" row col-md-8">
+                <div style="width:25%;" class="col-md-2">
+                  <select class="form-control" id="filter_tahun"></select>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
 
 
-      <script>
-  $(document).ready(function(){
+        </div>
+        <div id="tabellistfinal" class="table-responsive"></div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
 
     const dateya = new Date();
-    let bulandefault = dateya.getMonth()+1;
+    let bulandefault = dateya.getMonth() + 1;
     let tahundefault = dateya.getFullYear();
     let tahun = tahundefault;
-    const userid ="<?=trim($userlog) ?>";
+    const userid = "<?= trim($userlog) ?>";
     //if(userid !==""){
-      get_tahun();
-     // get_Data(userid,tahun);
-      $("#filter_tahun").val(tahun);
+    get_tahun();
+    // get_Data(userid,tahun);
+    $("#filter_tahun").val(tahun);
 
-      const datas ={
-          "userid":userid,
-          "tahun":tahun
-         };
-       get_Data(datas);
+    const datas = {
+      "userid": userid,
+      "tahun": tahun
+    };
+    get_Data(datas);
 
-       $(document).on("change","#filter_tahun",function(){
+    $(document).on("change", "#filter_tahun", function() {
 
-        const  tahun = $(this).val();
-        const useridx = $("#usernama").val();
+      const tahun = $(this).val();
+      const useridx = $("#usernama").val();
 
-         const datas ={
-          "userid":useridx,
-          "tahun":tahun
-         };
-        get_Data(datas);
+      const datas = {
+        "userid": useridx,
+        "tahun": tahun
+      };
+      get_Data(datas);
     })
-  
+
   });
   // and document ready
-  function get_tahun(){
-       let startyear = 2020;
-       let date = new Date().getFullYear();
-       let endyear = date + 2;
-       for(let i = startyear; i <=endyear; i++){
-         var selected = (i !== date) ? 'selected' : date; 
+  function get_tahun() {
+    let startyear = 2020;
+    let date = new Date().getFullYear();
+    let endyear = date + 2;
+    for (let i = startyear; i <= endyear; i++) {
+      var selected = (i !== date) ? 'selected' : date;
 
-        $("#filter_tahun").append($(`<option />`).val(i).html(i).prop('selected', selected));
-       }
-      }
- 
-  function get_Data(datas){
+      $("#filter_tahun").append($(`<option />`).val(i).html(i).prop('selected', selected));
+    }
+  }
+
+  function get_Data(datas) {
 
     $.ajax({
-                  url:"<?=base_url?>/transaksifinalkurs/listdatafinal",
-                  data:datas,
-                  method:"POST",
-                  dataType: "json",
-     
-                  success:function(result){
-                    Set_Tabel(result);
-                      
-  
-                  }
-      });
+      url: "<?= base_url ?>/transaksifinalkurs/listdatafinal",
+      data: datas,
+      method: "POST",
+      dataType: "json",
+
+      success: function(result) {
+        Set_Tabel(result);
+
+
+      }
+    });
   }
 
 
-  function Set_Tabel(result){
-    
-   console.log(result)
+  function Set_Tabel(result) {
+
+    console.log(result)
     let datatabel = ``;
 
-        datatabel +=`
+    datatabel += `
                     <table id="tabel1" class='table table-striped table-hover' style='width:100%'>                    
                                           <thead  id='thead'class ='thead'>
                                                     <tr>
@@ -156,21 +157,21 @@ $userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
                                               
         `;
 
-        let no =1;
-              $.each(result,function(a,b){
-                let status = b.status;
-                let ket  =  rep_kutif(b.Note);
-                let idpack = rep_kutif(b.No_Pli);
-                let formatTanggal = moment(b.EntryDate).format("DD-MM-YYYY");
-                let EntryDate = moment(b.EntryDate).format("YYYY-MM-DD");
-                let split = formatTanggal.split("-");
-                let tgl = split[0];
-                let bln = split[1];
-                let thn = split[2];
-                let th = thn.substr(2,2);
-               
-                let tanggal = tgl+"-"+bln+"-"+th;
-                datatabel +=`
+    let no = 1;
+    $.each(result, function(a, b) {
+      let status = b.status;
+      let ket = rep_kutif(b.Note);
+      let idpack = rep_kutif(b.No_Pli);
+      let formatTanggal = moment(b.EntryDate).format("DD-MM-YYYY");
+      let EntryDate = moment(b.EntryDate).format("YYYY-MM-DD");
+      let split = formatTanggal.split("-");
+      let tgl = split[0];
+      let bln = split[1];
+      let thn = split[2];
+      let th = thn.substr(2, 2);
+
+      let tanggal = tgl + "-" + bln + "-" + th;
+      datatabel += `
                             <td>${no++}</td>
                             <td style="width:10%">${tanggal}<sup class='text-info'>${b.Totaldetail}</sup></td>
                             <td>${b.supid}</td>
@@ -191,6 +192,7 @@ $userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
                                   <input type="hidden" name="Pib" value="${b.Pib}">
                                   <input type="hidden" name="Forwarder" value="${b.Forwarder}">
                                   <input type="hidden" name="Total" value="${b.Total}">
+                                  <input type ="hidden" name="Note2" value="${b.Note2}">
                                   <button type="submit" class="btn btn-warning" title="Posting">
                                     <i class="fas fa-fan"></i>
                                   </button>
@@ -209,6 +211,7 @@ $userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
                                     <input type="hidden" name="Pib" value="${b.Pib}">
                                     <input type="hidden" name="Forwarder" value="${b.Forwarder}">
                                     <input type="hidden" name="Total" value="${b.Total}">
+                                    <input type ="hidden" name="Note2" value="${b.Note2}">
                                     <button type="submit" class="btn btn-info" title="Edit">
                                         <i class="fa-solid fa-file-pen"></i>
                                     </button>
@@ -224,40 +227,44 @@ $userlog = (isset( $_SESSION['login_user']))?  $_SESSION['login_user'] : '';
                                 </form>
                               </td>
                             `;
-                  
-            
-            
-                      
-                          
-           
-                            datatabel +=`</tr>`;
-              });
-              datatabel +=`</tbody></table>`;
-              $("#tabellistfinal").empty().html(datatabel);
-              Tampildatatabel();
+
+
+
+
+
+
+      datatabel += `</tr>`;
+    });
+    datatabel += `</tbody></table>`;
+    $("#tabellistfinal").empty().html(datatabel);
+    Tampildatatabel();
   }
 
-    function rep_kutif(data){
+  function rep_kutif(data) {
 
     return data.replace(/&amp;apos;/g, "'").replace(/&amp;quot;/g, '"')
-    }
+  }
 
-        function  Tampildatatabel(){
+  function Tampildatatabel() {
 
-          const id = "#tabel1";
-          $(id).DataTable({
-              order: [[0, 'asc']],
-                responsive: true,
-                "ordering": true,
-                "destroy":true,
-                pageLength: 5,
-                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'All']],
-                fixedColumns:   {
-                     // left: 1,
-                      right: 1
-                  },
-                  
-              })
-        }
+    const id = "#tabel1";
+    $(id).DataTable({
+      order: [
+        [0, 'asc']
+      ],
+      responsive: true,
+      "ordering": true,
+      "destroy": true,
+      pageLength: 5,
+      lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, 'All']
+      ],
+      fixedColumns: {
+        // left: 1,
+        right: 1
+      },
+
+    })
+  }
 </script>
-

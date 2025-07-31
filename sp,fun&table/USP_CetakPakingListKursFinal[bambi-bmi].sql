@@ -17,6 +17,9 @@ BEGIN
         DROP TABLE #temptess
     END
 
+
+
+		
     -- Create temporary table
     CREATE TABLE #temptess (
         ItemNo         FLOAT,
@@ -51,6 +54,22 @@ BEGIN
         total_Prosentase FLOAT
     )
 
+		 -- Declare total variables
+    DECLARE
+        @total_qty       FLOAT,
+        @total_Price     FLOAT,
+        @total_USD       FLOAT,
+        @total_Kurs      FLOAT,
+        @total_Rp        FLOAT,
+        @total_KursAkhir FLOAT,
+        @total_RpAkhir   FLOAT,
+        @currid          VARCHAR(50),
+		@kurslanded		FLOAT,
+		@usd_only FLOAT,
+		@idr_only FLOAT,
+		@pib FLOAT 
+
+	SET @pib = (select ISNULL(SUM(amount), 0)  from FrowaderDetail_Temporary where No_Pls =@transnoHider AND hitungan='Y');
     -- Populate temporary table
     INSERT INTO #temptess
     SELECT
@@ -73,7 +92,7 @@ BEGIN
         c.EntryDate,
         c.Note,
         c.supid,
-        c.Pib,
+        @pib,
         c.Forwarder,
         c.Total,
         d.CustAddress,
@@ -90,16 +109,8 @@ BEGIN
     WHERE a.No_Pls = @transnoHider
     ORDER BY a.ItemNo ASC
 
-    -- Declare total variables
-    DECLARE
-        @total_qty       FLOAT,
-        @total_Price     FLOAT,
-        @total_USD       FLOAT,
-        @total_Kurs      FLOAT,
-        @total_Rp        FLOAT,
-        @total_KursAkhir FLOAT,
-        @total_RpAkhir   FLOAT,
-        @currid          VARCHAR(50)
+   
+	
 
     -- Calculate totals
     SELECT 
@@ -111,6 +122,22 @@ BEGIN
         @total_KursAkhir  = ISNULL(SUM(Kurs_Akhir), 0),
         @total_RpAkhir    = ISNULL(SUM(Amount_Akhir), 0)
     FROM #temptess
+	-- Ambil nilai Kurs_Akhir terkecil (TOP 1 ASC)
+	SELECT TOP 1 @kurslanded = Kurs_Akhir
+	FROM #temptess
+	WHERE  Partid <>'01.001.163'
+	ORDER BY ItemNo ASC;
+
+
+
+	--get total amount partid  '01.001.163'
+	SELECT 
+	@usd_only = ISNULL(SUM(Amount_USD), 0),
+	@idr_only = ISNULL(SUM(Amount_Rp), 0)
+	FROM #temptess
+	WHERE  Partid ='01.001.163';
+
+
 
     -- Get currency ID
     SET @currid = (SELECT TOP 1 currid FROM POTRANSACTIONDETAIL WHERE DOTransacID = @DOTransacID)
@@ -125,13 +152,18 @@ BEGIN
         @total_Rp         AS total_Rp,
         @total_KursAkhir  AS total_KursAkhir,
         @total_RpAkhir    AS total_RpAkhir,
-        @currid           AS currid
+        @currid           AS currid,
+		@kurslanded		  AS kurslanded,
+		(@total_USD + @usd_only ) AS total_usd_only,
+	    (@total_Rp + @idr_only) AS total_idr_only
     FROM #temptess
     ORDER BY ItemNo ASC
 END
 GO
 
 -- Example execution
-EXEC USP_CetakPakingListKursFinal 'BMI_PL250703155206','PO231009165537'
+EXEC USP_CetakPakingListKursFinal 'BMI_PL250722164155', 'PO250721130521'
+
+
 
 

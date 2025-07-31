@@ -41,7 +41,7 @@ $userlog = (isset($_SESSION['login_user'])) ?  $_SESSION['login_user'] : '';
     <!-- Default box -->
     <div class="card">
       <div class="card-header">
-        <h5 class="text-center">Biaya PIB + Forwader</h5>
+        <h5 class="text-center">Biaya Import</h5>
       </div>
       <div class="card-body">
         <div class="row col-md-12 col-12">

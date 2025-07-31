@@ -14,19 +14,15 @@ BEGIN
     -- ============================
     -- Drop Temporary Tables Jika Ada
     -- ============================
-    IF EXISTS (
-        SELECT name 
-        FROM tempdb..sysobjects 
-        WHERE name LIKE '#temptess%' AND xtype = 'U'
-    )
-        DROP TABLE #temptess;
+  IF EXISTS(SELECT [Table_name] FROM tempdb.information_schema.tables WHERE [Table_name] like '#temptess') 
+    BEGIN
+      DROP TABLE #temptess;
+    END;
 
-    IF EXISTS (
-        SELECT name 
-        FROM tempdb..sysobjects 
-        WHERE name LIKE '#temptess2%' AND xtype = 'U'
-    )
-        DROP TABLE #temptess2;
+ IF EXISTS(SELECT [Table_name] FROM tempdb.information_schema.tables WHERE [Table_name] like '#temptess') 
+    BEGIN
+      DROP TABLE #temptess2;
+    END;
 
     -- ============================
     -- Create Temporary Tables

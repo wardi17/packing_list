@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Alter Procedure
-CREATE PROCEDURE [dbo].[USP_INSERT_POAKINGLIST_KURS_HeaderTemporary]
+ALTER PROCEDURE [dbo].[USP_INSERT_POAKINGLIST_KURS_HeaderTemporary]
     @No_Pls VARCHAR(20),
     @No_Pli VARCHAR(200),
     @suplieid VARCHAR(150),
@@ -23,7 +23,8 @@ CREATE PROCEDURE [dbo].[USP_INSERT_POAKINGLIST_KURS_HeaderTemporary]
     @total_usd FLOAT,
     @total_rp FLOAT,
     @total_amountakhir FLOAT,
-    @total_Prosentase FLOAT
+    @total_Prosentase FLOAT,
+	@Note2 TEXT
 
 AS
 BEGIN
@@ -39,13 +40,15 @@ BEGIN
             No_Pls, No_Pli, POTransacid, EntryDate, Note,
             LastUserIDAccess, LastDateAccess, supid, NoPo, 
             Pib, Forwarder, Total, id_bl_awb,
-            total_usd,total_rp,total_amountakhir,total_Prosentase
+            total_usd,total_rp,total_amountakhir,total_Prosentase,
+			Note2
         )
         VALUES (
             @No_Pls, @No_Pli, @POTransacid, @EntryDate, @Note,
             @LastUserIDAccess, GETDATE(), @suplieid, @NoPo,
             @Pib, @Forwarder, @Total, @id_bl_awb,
-            @total_usd,@total_rp,@total_amountakhir,@total_Prosentase
+            @total_usd,@total_rp,@total_amountakhir,@total_Prosentase,
+			@Note2
         )
 
 
@@ -54,7 +57,7 @@ END
 GO
 
 
-  EXEC USP_INSERT_POAKINGLIST_KURS_HeaderTemporary
+ /* EXEC USP_INSERT_POAKINGLIST_KURS_HeaderTemporary
             'BMI_PL250612081521',
             'PC',
             'CHILINK',
@@ -70,6 +73,8 @@ GO
             '0.00',
             '0',
             '0',
-            '0.00'
+            '0.00',
+			''*/
+			
 
 

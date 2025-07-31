@@ -99,6 +99,7 @@ $userid =  $data["userid"];
       <div class="card-body">
         <div class=" row col-md-12">
           <div class="col-md-6">
+
             <div class="row mb-12 mb-2">
               <label for="transnoHider" style="width: 20%;" class="col-sm-2 col-form-label">Transno</label>
               <div class="col-sm-6">
@@ -136,12 +137,7 @@ $userid =  $data["userid"];
                 <span id="noteError" class="error"></span>
               </div>
             </div>
-            <div class="row mb-12 mb-2" style="display: none;">
-              <label for="idpackinglist" style="width: 20%;" class="col-sm-2 col-form-label">ID PIB</label>
-              <div class="col-sm-6">
-                <input disabled type="text" value="<?= $datapost["No_Pli"] ?>" id="idpackinglist" class="form-control">
-              </div>
-            </div>
+
 
 
 

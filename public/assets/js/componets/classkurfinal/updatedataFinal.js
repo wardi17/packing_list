@@ -7,7 +7,7 @@ class KurDataServiceFinal {
     }
 
     getFormData() {
-       const pib           = $("#pib").val();
+    //    const pib           = $("#pib").val();
         const forwarder     = $("#forwarder").val();
         const transnoHider  = $("#transnoHider").val();
         const suplieid      = $("#suplair").find(":selected").val();
@@ -17,7 +17,7 @@ class KurDataServiceFinal {
         const ket           = $("#keterangan").val();
         const idpackinglist = $("#idpackinglist").val();
         const id_bl_awb     = $("#id_bl_awb").val();
-        const total         = $("#total").text();
+        // const total         = $("#total").text();
         const total_usd     = $("#total_usd").text();
         const total_rp      = $("#total_rp").text();
         const total_amountakhir = $("#total_amountakhir").text();
@@ -31,10 +31,10 @@ class KurDataServiceFinal {
           "tanggal"       :tanggal,
           "keterangan"    :ket,
           "idpackinglist" :idpackinglist,
-          "pib"           :pib.replace(/\,/g,""),
+          "pib"           :0,
           "forwarder"     :forwarder.replace(/\,/g,""),
           "id_bl_awb"     :id_bl_awb,
-          "total"         :total.replace(/\,/g,"").trim(),
+          "total"         :0,
           "total_usd"     :total_usd.replace(/\,/g,"").trim(),
           "total_rp"      :total_rp.replace(/\,/g,"").trim(),
           "total_amountakhir" :total_amountakhir.replace(/\,/g,"").trim(),

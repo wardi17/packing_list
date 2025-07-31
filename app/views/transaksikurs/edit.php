@@ -137,7 +137,7 @@ $userid =  $data["userid"];
                 <span id="noteError" class="error"></span>
               </div>
             </div>
-            
+
             <div class="row mb-12 mb-2" style="display: none;">
               <label for="idpackinglist" style="width: 20%;" class="col-sm-2 col-form-label">ID PIB</label>
               <div class="col-sm-6">
