@@ -67,7 +67,7 @@ appendCustomStyles() {
   // Tombol Batal
   const btnBatal = document.createElement("button");
   btnBatal.className = "btn btn-secondary me-2"; // Jarak kanan
-  btnBatal.id = "BatalDetailData";
+  btnBatal.id = "BatalDetailDatafinal";
   btnBatal.textContent = "Batal";
 
 

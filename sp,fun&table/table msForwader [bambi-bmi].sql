@@ -14,7 +14,8 @@ CREATE TABLE msForwader(
 )
 
 ALTER TABLE msForwader 
-ADD status_aktif CHAR(1) DEFAULT 'Y';
+ADD IDKategori VARCHAR(25),
+kategori VARCHAR(100)
 
 
 INSERT INTO msForwader (keterangan,rumus,hitungan,status_aktif,user_input)

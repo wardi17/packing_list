@@ -18,10 +18,10 @@ ALTER PROCEDURE usp_GetForwaderEditByID
 	  SET @total_hitungan =(SELECT  COALESCE(SUM(amount),0) FROM [bambi-bmi].[dbo].FrowaderDetail WHERE No_Pls=@No_Pls AND hitungan='Y')
 	   SET @total_rumus =(SELECT  COALESCE(SUM(amount),0) FROM [bambi-bmi].[dbo].FrowaderDetail WHERE No_Pls=@No_Pls AND rumus='Y')
 
-	SELECT a.msID,a.keterangan,b.rumus,b.hitungan,b.amount,@total_hitungan as total_hitungan,@total_rumus as total_rumus from [bambi-bmi].[dbo].msForwader as a
+	SELECT a.msID,a.keterangan,b.rumus,b.hitungan,b.amount,@total_hitungan as total_hitungan,@total_rumus as total_rumus,a.IDKategori,a.kategori from [bambi-bmi].[dbo].msForwader as a
 	LEFT JOIN [bambi-bmi].[dbo].FrowaderDetail as b
 	ON b.msID =a.msID 
-	WHERE b.No_Pls=@No_Pls
+	WHERE b.No_Pls=@No_Pls ORDER BY a.IDKategori,a.msID ASC
 END;
 
 GO

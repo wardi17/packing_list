@@ -103,6 +103,7 @@ $userlog = (isset($_SESSION['login_user'])) ?  $_SESSION['login_user'] : '';
   }
 
   function Set_Tabel(result) {
+
     let datatabel = `
       <table id="tabel1" class='table table-striped table-hover' style='width:100%'>
         <thead id='thead' class='thead'>
@@ -134,7 +135,7 @@ $userlog = (isset($_SESSION['login_user'])) ?  $_SESSION['login_user'] : '';
           <td>${b.supid}</td>
           <td>${b.NoPo}</td>
           <td>${ket}</td>
-          <td class="text-end">${b.Total}</td>
+          <td class="text-end">${b.Forwarder}</td>
           <td>${b.userid}</td>
           <td>${b.UserPosting}</td>
           <td>${tgl_set(b.DatePosting)}</td>
@@ -147,6 +148,7 @@ $userlog = (isset($_SESSION['login_user'])) ?  $_SESSION['login_user'] : '';
               <input type="hidden" name="No_Pls" value="${b.No_Pls}">
               <input type="hidden" name="EntryDate" value="${EntryDate}">
               <input type="hidden" name="Note" value="${b.Note}">
+                <input type="hidden" name="Note2" value="${b.Note2}">
               <input type="hidden" name="POTransacid" value="${b.POTransacid}">
               <input type="hidden" name="Pib" value="${b.Pib}">
               <input type="hidden" name="Forwarder" value="${b.Forwarder}">
